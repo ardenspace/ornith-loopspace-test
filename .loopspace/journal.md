@@ -1,0 +1,2 @@
+# Journal
+version: 1
