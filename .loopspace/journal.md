@@ -23,3 +23,10 @@ version: 1
 - tdd-evidence: `ModuleNotFoundError: No module named 'subcut.cue'` (import failure before any source existed)
 - verifier: PASS — All 9 tests pass. Every acceptance criterion is covered by at least one test that would fail if violated.
 - files: subcut/cue.py, subcut/shift.py, subcut/__init__.py, tests/test_shift.py
+
+## [1.3] attempt 1 — PASS
+- implementer: Implemented `parse_srt` with CRLF normalization, blank-line block splitting, and validation for all malformed input cases
+- approach: Regex-split blocks by blank lines, validate index/time/text structure, delegate timestamp parsing to existing `parse_timestamp`
+- tdd-evidence: `tests/test_parse.py` failed-first: `ERROR importing 'parse_srt' from 'subcut'`
+- verifier: PASS — All 12 tests pass. Every acceptance criterion maps to at least one test that would fail if the criterion were violated. No secrets found.
+- files: subcut/parse.py, subcut/__init__.py, tests/test_parse.py
