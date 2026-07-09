@@ -1,7 +1,7 @@
 # Loopspace State
 version: 1
 run_status: executing
-harness: claude-code
+harness: opencode
 tier: A
 current_phase: 1
 current_task: 1.1
@@ -17,7 +17,7 @@ current_branch: loopspace/subcut/run
 ## Tasks
 | id  | status  | attempts | risk  |
 |-----|---------|----------|-------|
-| 1.1 | pending | 0        | light |
+| 1.1 | done | 1        | light |
 | 1.2 | pending | 0        | light |
 | 1.3 | pending | 0        | light |
 | 1.4 | pending | 0        | light |
