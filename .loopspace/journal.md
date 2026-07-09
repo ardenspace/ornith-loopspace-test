@@ -16,3 +16,10 @@ version: 1
 - tdd-evidence: N/A — code and tests pre-existed; `pytest -q` confirmed all 20 pass.
 - verifier: PASS — All 20 tests pass; implementation and tests cover every acceptance criterion.
 - files: tests/conftest.py
+
+## [1.2] attempt 1 — PASS
+- implementer: Implemented Cue dataclass and pure shift_cues with independent start/end clamping; 9 tests cover all acceptance criteria.
+- approach: dataclass for Cue, list comprehension with max(0, t+delta) for independent clamping, new list via comprehension preserves input immutability.
+- tdd-evidence: `ModuleNotFoundError: No module named 'subcut.cue'` (import failure before any source existed)
+- verifier: PASS — All 9 tests pass. Every acceptance criterion is covered by at least one test that would fail if violated.
+- files: subcut/cue.py, subcut/shift.py, subcut/__init__.py, tests/test_shift.py
