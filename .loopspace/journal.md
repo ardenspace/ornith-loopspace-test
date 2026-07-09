@@ -30,3 +30,12 @@ version: 1
 - tdd-evidence: `tests/test_parse.py` failed-first: `ERROR importing 'parse_srt' from 'subcut'`
 - verifier: PASS — All 12 tests pass. Every acceptance criterion maps to at least one test that would fail if the criterion were violated. No secrets found.
 - files: subcut/parse.py, subcut/__init__.py, tests/test_parse.py
+
+## [1.4] attempt 1 — PASS
+- implementer: Implemented `merge_overlapping` with single-pass merge after stable sort; all 8 acceptance tests pass.
+- approach: Stable sort by start, then single-pass merge where `prev.end > cue.start` collapses chained overlaps naturally; new Cue objects returned to guarantee no input mutation.
+- tdd-evidence: `tests/test_merge.py` failed-first: `ImportError: cannot import name 'merge_overlapping' from 'subcut.merge'`
+- verifier: PASS — All 8 tests pass; every acceptance criterion is covered by a test that would fail if violated.
+- files: subcut/merge.py, subcut/__init__.py, tests/test_merge.py
+
+## [phase 1] verified — 49/49 tests green; all 6 required symbols exported from `subcut/__init__.py`; no-mutation contract tested for `shift_cues` and `merge_overlapping`; no TODO/FIXME.

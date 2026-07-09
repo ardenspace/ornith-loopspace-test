@@ -1,6 +1,6 @@
 # Loopspace State
 version: 1
-run_status: executing
+run_status: complete
 harness: opencode
 tier: A
 current_phase: 1
@@ -20,4 +20,4 @@ current_branch: loopspace/subcut/run
 | 1.1 | done | 1        | light |
 | 1.2 | done | 0        | light |
 | 1.3 | done | 0        | light |
-| 1.4 | pending | 0        | light |
+| 1.4 | done | 0        | light |
