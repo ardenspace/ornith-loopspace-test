@@ -10,3 +10,8 @@ version: 1
 - implementer: 5-case overlap classification (no-overlap/fully-covered/trim-right/trim-left/split), rebuild list
 - verifier: PASS — all 17 remove tests pass, full suite 36 green, no concerns
 - files: intervalset/interval_set.py, tests/test_remove.py
+
+## [phase 1] verified
+- structure-note: none — single class, single module, two focused test files; no disproportionate indirection.
+- freshness-note: none — no next phase.
+- spec-concern: none

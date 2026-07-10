@@ -1,6 +1,6 @@
 # Loopspace State
 version: 1
-run_status: executing
+run_status: complete
 harness: opencode
 tier: A
 current_phase: 1
