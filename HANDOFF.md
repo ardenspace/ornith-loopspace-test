@@ -1,6 +1,15 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-11 · 다음 세션: **heavy task 실험** (모호성 축은 이제 완료)
+written: 2026-07-11 · 정밀·모호·**heavy 세 축 모두 완료** — correctness 델타 전부 0. 다음 후보 = 긴 멀티세션 드리프트.
+
+## ⏩ UPDATE 2026-07-11 (2) — heavy task A/B (Experiment Z, kvtx) 완료: correctness 델타 0, 단 heavy 패널 첫 실제 개입
+- **과제=kvtx** (nested-transaction in-memory KV DB + `count`-by-value; 킬러=count가 중첩 롤백/오버라이트 관통 일관성 — 인간도 자주 슬립하는 고전 문제). spec+plan **정밀**(행동 열거), task 1.2 `risk:heavy`. 격리=X(양쪽 동일 spec+plan, 유일 변수=looprun heavy 루프).
+- **held-out oracle 64개**(named 킬러 케이스 + 40 랜덤 vs overlay 레퍼런스, 자기검증 통과) → **둘 다 64/64, correctness 델타 0.** ornith가 heavy도 solo로 안 슬립.
+- **그러나 미검증 heavy 3렌즈 패널이 처음으로 실제 개입:** task 1.2 attempt 1 = **test-integrity FAIL** (implementer가 TDD 안 하고 테스트를 구현 후 작성 → failed-first 증거 자기모순을 렌즈가 탐지) → 재시도 강제 → attempt 2 진짜 TDD로 PASS. **4개 실험 통틀어 첫 검증 개입.** 단 correctness 렌즈는 attempt 1도 PASS했음 = **프로세스 수정이지 버그 수정 아님.** 순 shipped-correctness 델타는 여전히 0.
+- **코드 청결도는 solo가 오히려 나음**: Arm A 60 LOC(dead code 0) vs Arm B 135 LOC(패널이 non-blocking으로 지적한 dead `Store` 클래스 = scope creep 포함). loopspace가 재시도 1회 + 장황함을 비용으로 치름.
+- **결론(4연속 델타 0):** loopspace 값어치 = 유능한 모델엔 **correctness 향상이 아니라 프로세스/무결성 보험**(TDD 실제로 했는지, test-gaming 방지). 이번엔 코드가 맞아서 그 보험이 물지 않았을 뿐. correctness 델타 뽑으려면 모델이 *실제로 틀린 답을 shipping*해야 하는데 ornith는 잘 명세된 과제(easy/hard 불문)에서 안 그럼. **남은 후보 = 긴 멀티세션(컨텍스트 드리프트·핸드오프 손실이 solo를 무너뜨리고 loopspace의 fresh-agent+handoff가 버티나).**
+- 위치: `~/code/kvtx-trial`(B), `~/code/kvtx-solo`(A), `~/code/kvtx-grading/`(oracle+EXPERIMENT.md).
+
 
 ## 한 줄
 로컬 모델 **ornith-1.0-35b-Q5_K_M**가 [loopspace] 자율 하네스의 *실행 백엔드*로 쓸만한지 검증하는 실험. 여기까지: **정밀명세·모호명세 둘 다 검증 완료(A/B 델타 전부 0)**, 남은 건 **heavy task(3렌즈 패널)로 loopspace의 진짜 값을 찾는 것**.
