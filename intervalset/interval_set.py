@@ -50,6 +50,26 @@ class IntervalSet:
 
         self._intervals = result
 
+    def remove(self, start, end):
+        if start > end:
+            return
+
+        result = []
+        for s, e in self._intervals:
+            if e < start or s > end:
+                result.append((s, e))
+            elif s >= start and e <= end:
+                pass
+            elif s < start and e <= end:
+                result.append((s, start - 1))
+            elif s >= start and e > end:
+                result.append((end + 1, e))
+            else:
+                result.append((s, start - 1))
+                result.append((end + 1, e))
+
+        self._intervals = result
+
     def contains(self, point):
         for s, e in self._intervals:
             if s > point:

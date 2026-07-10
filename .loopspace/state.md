@@ -18,4 +18,4 @@ current_branch: loopspace/intervalset/phase-1
 | id  | status  | attempts | risk  |
 |-----|---------|----------|-------|
 | 1.1 | done      | 1        | light |
-| 1.2 | pending | 0        | light |
+| 1.2 | done      | 1        | light |
