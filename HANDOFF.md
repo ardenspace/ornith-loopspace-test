@@ -1,0 +1,59 @@
+# HANDOFF — ornith × loopspace 검증 실험
+
+written: 2026-07-11 · 다음 세션: **heavy task 실험**
+
+## 한 줄
+로컬 모델 **ornith-1.0-35b-Q5_K_M**가 [loopspace] 자율 하네스의 *실행 백엔드*로 쓸만한지 검증하는 실험. 여기까지: **easy·정밀명세 과제에선 검증 완료**, 다음은 **heavy/모호한 과제로 loopspace의 진짜 값을 찾는 것**.
+
+---
+
+## 지금까지 (요약)
+
+1. **Path A 검증** — frontier(Claude Code)로 spec→plan 짜고, ornith가 opencode에서 `looprun`. 과제=subcut(SRT 타임코드 순수함수 lib, 4 light task). → 49/49 green(독립 실행 확인), verifier가 실전 결함(import 세팅) 잡아 재시도 강제 = 정직.
+2. **verifier 트랩 실험** — 일부러 "pytest 초록불인데 코드/테스트가 criterion 위반"인 함정 심음. ornith verifier가 **FAIL로 정확히 잡음**(버그 코드 라인 + 틀린 테스트 둘 다). → verifier 정직성 = 운 아니라 실력.
+3. **격리 실험 (Arm A vs B)** — 같은 frontier spec+plan을, **Arm B=loopspace로 실행 / Arm A=solo ornith(looprun 없이 그냥 빌드)**. 내가 스펙에서 독립 작성한 **held-out oracle 53개**로 양쪽 채점.
+   → **결과: 둘 다 53/53. 델타 = 0.** solo ornith가 트랩 계급(독립 clamp·digit-count·transitive merge·CRLF·no-mutation·bool거부)까지 스스로 다 처리. 몇 군데는 loopspace arm보다 오히려 더 깔끔.
+
+## 핵심 결론 (정직하게, 다음 실험의 출발점)
+
+- **잘 명세된 작은 작업엔 loopspace 검증 루프가 redundant.** 좋은 스펙 + 유능한 모델이면 solo로 충분. loopspace 루프 값어치는 *리스크의 함수*고 subcut은 저리스크였음.
+- **단, "loopspace 무용"은 아님:** (a) solo를 성공시킨 그 *정밀한 스펙 자체*를 loopspace 기획 파이프라인(loopspec→loopplan+패널)이 만듦 — 우린 *looprun*만 뺐지 기획 규율을 뺀 게 아님. (b) loopspace가 값을 해야 할 조건(모호 스펙 / 긴 세션 드리프트 / heavy task / 모델이 *실제로* 버그 내는 상황)을 하나도 안 건드림.
+- **그래서 다음 물음 = "스펙을 얼마나 대충 줘도 loopspace가 건져내나" + "heavy task(3렌즈 패널)에서 solo가 무너지나".**
+
+---
+
+## 다음 세션 실험 설계 (heavy task) — 제안
+
+loopspace가 이긴다고 *주장하는 조건*을 일부러 만들어야 델타가 나옴:
+
+- **난이도↑ + heavy 태스크**: 상태·부분실패 분기·상호작용 있는 과제(예: 미니 인터프리터/파서+평가기, 동시성/락, 트랜잭션 롤백 로직). loopplan에서 `risk: heavy` 태그 → looprun이 **3렌즈 패널(correctness/security/test-integrity)** 밟음. subcut은 전부 light라 패널 자체를 시험 못 했음.
+- **(강추) 모호-스펙 A/B arm**: 일부러 *덜 명세된* 스펙을 양쪽에 주고 → solo는 자기 해석으로 짜다 슬립 내나 / loopspace는 검증으로 잡나. 이게 loopspace의 *실제 claim*이라 제일 판별력 높음.
+- **채점**: 여기서도 **held-out oracle** 필수(자기 테스트로 채점하면 순환논리). 예시 보존: `experiment/subcut_oracle_example.py`.
+
+## 운영 디테일 (그대로 재사용)
+
+- **ornith model id**: `ornith/ornith-1.0-35b-Q5_K_M`
+- **⚠️ 최대 GOTCHA**: `opencode run` 백그라운드 잡이 끝나도 **프로세스가 안 죽고 남음** → 다음 run이 ornith **단일 GPU 슬롯**을 기다리며 **무한 행**(첫 모델 호출에서 멈춤, 배너·파일 0, CPU 낮음). **새 run 전에 반드시 `pkill -9 -f opencode`로 좀비 정리.** 이 증상이면 이게 원인.
+- **ornith 로드**: `llm ornith`로 스왑(gemma와 배타 — 맥미니 48GB 단일 GPU offload).
+- **헤드리스 실행**: `cd <repo> && opencode run --auto --print-logs --log-level INFO -m ornith/ornith-1.0-35b-Q5_K_M "<prompt>"` (`--print-logs`=진단, `--auto`=권한 자동승인, throwaway repo에서만).
+- **loopspace 파이프라인**: `/loopspec` → `/loopplan` (여기 Claude Code=frontier 저작) → opencode 세션에서 실행. 헤드리스 실행 진입 = `opencode run "Read /Users/arden/code/loopspace/skills/loopresume/SKILL.md and follow it exactly."` (loopresume가 run_status 보고 looprun으로 라우팅). 상태는 `.loopspace/`.
+- **opencode 셋업**: 각 repo `.opencode/command/*.md`에 loopspace 스킬 stub(`Read ~/code/loopspace/skills/<name>/SKILL.md and follow it exactly.`), `opencode.json`에 `{"model":"ornith/ornith-1.0-35b-Q5_K_M"}` 고정.
+- **held-out oracle 채점**: `PYTHONPATH=<repo> python3 -m pytest <oracle-file-밖에-둔-것> -q`.
+
+## 파일/위치
+
+- **Arm B (loopspace)**: `~/code/subcut-trial` — `.loopspace/`(spec/plan/state/journal), 생성 코드 `subcut/`+`tests/`. GitHub `ardenspace/ornith-loopspace-test`. 브랜치 `loopspace/subcut/run`.
+- **Arm A (solo)**: `~/code/subcut-solo` — `SPEC.md`+`PLAN.md` seed + ornith가 solo로 생성한 코드. (B와 동일 스펙, loopspace만 없음)
+- **oracle 보존본**: `~/code/subcut-trial/experiment/subcut_oracle_example.py` (원본은 세션 scratchpad라 휘발됨 — 이게 durable 사본). Arm A 프롬프트도 `experiment/armA_solo_prompt.txt`.
+- **loopspace 체크아웃**: `~/code/loopspace`. `harnesses/opencode.md`의 `verified:` 줄 = **2026-07-10로 갱신 완료(커밋 `ad50e56`)**.
+
+## 열린 것 (미완)
+
+- `~/code/loopspace`의 opencode.md verified 커밋 + subcut-trial 커밋 = **미푸시** (푸시는 사용자 몫).
+- **텔레그램 브릿지**: 정당화됐지만 미착수 (`opencode run -s <session>` 감싸는 얇은 봇, chat_id 화이트리스트 필수, Hermes+Codex와 별 프로세스). 상세는 메모리 [[ornith-loopspace-local-backend]].
+- **다음 = heavy/모호-스펙 실험** (위 설계).
+
+## 다음 세션 시작하는 법
+1. `~/code/subcut-trial/HANDOFF.md`(이 파일) 읽기.
+2. `pkill -9 -f opencode`로 좀비 확인/정리, `llm ornith`로 모델 로드 확인.
+3. heavy task 주제 정하고 `/loopspec`부터 (또는 모호-스펙 arm이면 스펙을 일부러 얕게).
