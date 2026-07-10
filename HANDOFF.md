@@ -1,9 +1,16 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-11 · 다음 세션: **heavy task 실험**
+written: 2026-07-11 · 다음 세션: **heavy task 실험** (모호성 축은 이제 완료)
 
 ## 한 줄
-로컬 모델 **ornith-1.0-35b-Q5_K_M**가 [loopspace] 자율 하네스의 *실행 백엔드*로 쓸만한지 검증하는 실험. 여기까지: **easy·정밀명세 과제에선 검증 완료**, 다음은 **heavy/모호한 과제로 loopspace의 진짜 값을 찾는 것**.
+로컬 모델 **ornith-1.0-35b-Q5_K_M**가 [loopspace] 자율 하네스의 *실행 백엔드*로 쓸만한지 검증하는 실험. 여기까지: **정밀명세·모호명세 둘 다 검증 완료(A/B 델타 전부 0)**, 남은 건 **heavy task(3렌즈 패널)로 loopspace의 진짜 값을 찾는 것**.
+
+## ⏩ UPDATE 2026-07-11 — 모호-스펙 A/B (Experiment Y) 완료: 또 델타 0
+- **과제=intervalset** (정수 폐구간 IntervalSet, 불변식 "최소 개수 구간"만 정밀 진술, 인접병합·remove-split 등 엣지 **일부러 미열거**). Arm B=loopplan이 불변식→acceptance로 엣지 도출→ornith looprun / Arm A=solo ornith가 얕은 스펙만 받고 빌드.
+- **held-out oracle 56개(내가 독립 저작, brute-force 레퍼런스 내장, 자기검증 통과) → 둘 다 56/56, 델타 0.** solo가 정수 인접 off-by-one까지 불변식에서 자력 도출. 자체 테스트도 solo가 더 많이(49 vs 36).
+- **결론: 모호성 축(최고 판별력 예상)마저 델타 0.** 좋은 불변식 + 유능한 모델이면 검증 루프 redundant. **델타는 모델이 *실제로 슬립*해야 나옴 → 남은 건 heavy task뿐.**
+- 위치: `~/code/intervalset-trial`(Arm B, loopspace), `~/code/intervalset-solo`(Arm A), `~/code/intervalset-grading/`(EXPERIMENT.md + oracle, arm 밖 격리). 상세는 거기 EXPERIMENT.md.
+- **운영 GOTCHA 추가**: raw `opencode run "Read <abs>/loopresume/SKILL.md ..."` 진입이 ornith에서 상대경로 `.loopspace/`를 SKILL 디렉토리 기준으로 resolve해 no-op 종료(exit 0, 작업 0). **프롬프트에 프로젝트 cwd 명시 + "모든 `.loopspace/...`는 거기서 resolve" 못박아야 함.**
 
 ---
 
