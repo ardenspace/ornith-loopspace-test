@@ -20,6 +20,7 @@
 | **subcut** | 정밀 스펙 (SRT 타임코드 순수함수) | 53/53 | 53/53 | **0** |
 | **intervalset** | 모호 스펙 (불변식만, 엣지 미열거) | 56/56 | 56/56 | **0** |
 | **kvtx** | heavy 태스크 (nested-tx KV DB) | 64/64 | 64/64 | **0** |
+| **kvtx 재런** | 응집성 수리 검증 (loopspace 0.14 carry) | — (B만 재런) | 64/64 | **0** *(목표 아님)* |
 
 *(subcut은 최초 Path A 검증 + 격리 A/B를 겸함. 상세 EXPERIMENTS-LOG.md)*
 
@@ -37,6 +38,12 @@
    base-store 로직 중복 + 유지되지만 안 읽히는 dead index. solo는 단일 컨텍스트라
    응집적(60 vs 135 LOC, dead code 0 vs 2종). 원인 = intra-phase 태스크 간 *구조 carry가
    부재*(handoff는 phase/context 경계에서만 발화). 상세는 kvtx/grading/EXPERIMENT.md + LOG.
+4. **응집성 갭 해소 확인 (kvtx 재런, loopspace 0.14).** 3번을 겨냥한 loopspace
+   "intra-phase carry" 수리(`exports:` 자가보고 + PRIOR WORK 블록 + 양층 중복 강제) 후
+   동일 spec+plan 재런: 1.2가 `Store`를 재구현 대신 composition으로 확장, **dead code 0,
+   85 LOC**(구 135), oracle 64/64 유지. 블록 조립→디스패치 주입→verifier 체크 전 구간을
+   opencode 세션 DB에서 확인. 잔여: ornith가 템플릿 A의 고정 계약 문장 1개를 디스패치에서
+   누락(이번엔 무해 — 정보만으로 순응). 상세 EXPERIMENTS-LOG UPDATE (3).
 
 ## 디렉토리
 

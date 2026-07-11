@@ -1,6 +1,14 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-11 · 정밀·모호·**heavy 세 축 모두 완료** — correctness 델타 전부 0. 다음 후보 = 긴 멀티세션 드리프트.
+written: 2026-07-11 · 정밀·모호·**heavy 세 축 모두 완료** — correctness 델타 전부 0. loopspace 0.14 carry 재런으로 **응집성 갭 해소 확인**. 다음 후보 = 긴 멀티세션 드리프트.
+
+## ⏩ UPDATE 2026-07-11 (3) — intra-phase carry 수리 검증 재런 (kvtx-rerun): 응집성 갭 해소 확인
+- **배경**: kvtx의 코드 응집성 갭(fresh-agent 격리 → 1.2가 `Store` 존재를 모르고 `Database` 통재구현, dead `Store`+`_vk`, 135 vs 60 LOC)을 loopspace **0.14.0 "intra-phase carry"**로 수리 — implementer `exports:` 자가보고 + 디스패치마다 PRIOR WORK THIS PHASE 블록(저널에서 조립, diet 유지) + 양층 중복 강제(태스크 verifier check + phase verifier blocking check). 머지 `4f91830`, 리뷰 후속 `d21f392`(reuse 체크가 자가보고 라인이 아니라 트리를 보고 판정 — 과대보고 export의 false FAIL 경로 차단).
+- **재런 설계**: 동일 spec+plan, 유일 변수 = loopspace 버전. `~/code/kvtx-rerun`에서 실행, 이 repo `kvtx/armB-loopspace-rerun/`에 아카이브.
+- **결과: 실패 모드 재발 없음.** 1.2가 `Store`를 composition으로 감쌈(저널 exports에 "Store — … (unchanged)"라고 이전 작업 인지 명시), **dead code 0, 85 LOC**(구 135), **oracle 64/64 유지**, 1.2 attempt 1에 3렌즈 전부 PASS(구런은 test-integrity FAIL로 2 attempts). phase verifier가 신설 blocking check로 "no duplication between tasks" 명시 판정 + 구런에서 아무도 못 잡던 `Database.count()` O(n) vs `Store.count()` O(1) 비대칭을 spec-concern으로 표면화(check 5 프레이밍 수리의 부수 효과).
+- **메커니즘 전 구간 증거** (opencode 세션 DB `part` 테이블 직접 확인): orchestrator(ornith)가 저널에서 블록 조립("1.2 needs to know Store exists"라고 자가 추론) → 1.2 디스패치에 `[1.1] files: … — exports: kvtx.database.Store …` verbatim 주입 → verifier 디스패치 4건에 Prior-work reuse 체크(d21f392 문구 포함) 실림.
+- **잔여 이슈 (경미, ornith 이행 슬립)**: ① 템플릿 A 인스턴스화 때 PRIOR WORK 블록 아래 **고정 계약 문장**("never build a parallel implementation … verifier FAIL")을 누락 — placeholder 섹션 전체를 빈칸 채우기로 취급한 듯. 이번엔 정보만으로 순응해서 무해했지만 3겹 방어(정보+경고 / 태스크 verifier / phase verifier) 중 1겹이 전달에서 샘 → 템플릿/looprun에 "고정 문구 verbatim 디스패치" 명시 후보. ② 브랜치 규율 미이행(phase-1 브랜치 미생성, run 브랜치에서 전부 진행) — 같은 계열 슬립, 실험 판정 무관.
+- **단서**: n=1이고 강제 경로(중복 FAIL)는 미발화 — implementer가 정보만으로 먼저 순응해서 억지력이 이빨보다 먼저 작동. 잔여 85 vs 60 LOC는 낭비가 아니라 plan이 의도한 2층 구조(base store 위 tx layer). correctness 델타는 여전히 0(예상대로 — 이 수리의 목표 아님). 다음 큰 실험 = 멀티세션 드리프트 (불변).
 
 ## ⏩ UPDATE 2026-07-11 (2) — heavy task A/B (Experiment Z, kvtx) 완료: correctness 델타 0, 단 heavy 패널 첫 실제 개입
 - **과제=kvtx** (nested-transaction in-memory KV DB + `count`-by-value; 킬러=count가 중첩 롤백/오버라이트 관통 일관성 — 인간도 자주 슬립하는 고전 문제). spec+plan **정밀**(행동 열거), task 1.2 `risk:heavy`. 격리=X(양쪽 동일 spec+plan, 유일 변수=looprun heavy 루프).

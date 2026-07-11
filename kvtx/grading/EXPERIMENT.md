@@ -106,3 +106,38 @@ need the model to *actually ship a wrong answer* — which ornith has not done
 on any well-specified task, easy or hard. The remaining candidate is
 **long multi-session runs** where context drift / handoff loss hurts a solo
 build while loopspace's fresh-agent-per-task + handoff discipline holds.
+
+## Rerun (2026-07-11) — loopspace 0.14.0 intra-phase carry, coherence gap closed
+
+The coherence finding above drove a loopspace repair ("intra-phase carry":
+implementer `exports:` self-report, a PRIOR WORK THIS PHASE block assembled
+from the journal into every dispatch, and two-layer duplication enforcement
+— merge `4f91830` + review follow-up `d21f392`). Rerun with identical
+spec+plan, only the loopspace version changed; archived at
+`../armB-loopspace-rerun/`.
+
+| | old Arm B (0.13) | rerun (0.14) | Arm A solo |
+|---|---|---|---|
+| held-out oracle | 64/64 | **64/64** | 64/64 |
+| impl size | 135 LOC, dead `Store` + dead `_vk` | **85 LOC, no dead code** | 60 LOC |
+| task 1.2 | 2 attempts (test-integrity FAIL) | **1 attempt, all lenses PASS** | — |
+
+Task 1.2 received `[1.1] files: … — exports: kvtx.database.Store —
+set/get/delete/count, O(1) two-dict` in its dispatch (verified in the
+opencode session store) and **wrapped Store by composition** instead of
+re-implementing it — its own exports line says "Store … (unchanged)". The
+phase verifier applied the new blocking duplication check ("no duplication
+between tasks") and surfaced the `Database.count()` O(n) vs `Store.count()`
+O(1) asymmetry as a spec-concern — the same class of observation that went
+completely unflagged in the 0.13 run.
+
+Caveats: n=1; the enforcement path (verifier FAIL on duplication) never
+fired because the information alone was enough — deterrence worked before
+the teeth were needed. One benign harness slip: ornith dropped template A's
+fixed contract sentence ("never build a parallel implementation … verifier
+FAIL") when instantiating the dispatch, delivering the block data without
+the warning — a candidate for a "fixed template text is dispatched
+verbatim" clarification in looprun. The remaining 85-vs-60 LOC gap is the
+plan's intended two-layer structure (tx layer over base store), not waste.
+Correctness delta remains 0, as expected — that was never this repair's
+target; the multi-session drift experiment is still the open question.
