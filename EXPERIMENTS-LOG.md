@@ -1,6 +1,6 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-11 · 정밀·모호·**heavy 세 축 모두 완료** — correctness 델타 전부 0. loopspace 0.14 carry 재런으로 **응집성 갭 해소 확인**. 다음 후보 = 긴 멀티세션 드리프트.
+written: 2026-07-11 · 정밀·모호·**heavy 세 축 모두 완료** — correctness 델타 전부 0. loopspace 0.14 carry 재런으로 **응집성 갭 해소 확인**. 다음 = **실험 W(gridcalc, 멀티세션 드리프트) 설계 확정** — `gridcalc/grading/EXPERIMENT.md` (미니 스프레드시트 4 phase, 하룻밤 무인 × 2, solo 자율노트 baseline, 궤적 채점).
 
 ## ⏩ UPDATE 2026-07-11 (3) — intra-phase carry 수리 검증 재런 (kvtx-rerun): 응집성 갭 해소 확인
 - **배경**: kvtx의 코드 응집성 갭(fresh-agent 격리 → 1.2가 `Store` 존재를 모르고 `Database` 통재구현, dead `Store`+`_vk`, 135 vs 60 LOC)을 loopspace **0.14.0 "intra-phase carry"**로 수리 — implementer `exports:` 자가보고 + 디스패치마다 PRIOR WORK THIS PHASE 블록(저널에서 조립, diet 유지) + 양층 중복 강제(태스크 verifier check + phase verifier blocking check). 머지 `4f91830`, 리뷰 후속 `d21f392`(reuse 체크가 자가보고 라인이 아니라 트리를 보고 판정 — 과대보고 export의 false FAIL 경로 차단).
