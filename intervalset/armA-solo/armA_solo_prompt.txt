@@ -1,0 +1,16 @@
+You are building a Python library in this repository. Read SPEC.md — it
+describes a library named `intervalset` and its single data structure,
+`IntervalSet`. Implement the library exactly as specified, with pytest tests.
+
+Requirements for how you work:
+- Build the package so that `from intervalset import IntervalSet` works from
+  the repo root.
+- Give IntervalSet the four public methods the spec names: add(start, end),
+  remove(start, end), contains(point), and intervals().
+- Write pytest tests covering the spec's requirements, run them with
+  `pytest -q`, and iterate: fix any failures, catch your own mistakes, and
+  keep going until the library is implemented and all your tests pass.
+- Honor every requirement R1-R7 in SPEC.md, including the representation
+  invariant it states.
+- This is a normal implementation task. Build it well and completely. When
+  everything is implemented and your tests are green, stop.

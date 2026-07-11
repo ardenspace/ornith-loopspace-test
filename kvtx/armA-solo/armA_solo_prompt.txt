@@ -1,0 +1,18 @@
+You are building a Python library in this repository. Read SPEC.md and
+PLAN.md — together they fully describe a library named `kvtx` and its task
+breakdown. Implement the ENTIRE library exactly as specified, with pytest
+tests for each part.
+
+Requirements for how you work:
+- Build the package so that `from kvtx import Database` works from the repo
+  root.
+- Give Database the seven methods the spec names: set(key, value),
+  get(key), delete(key), count(value), begin(), rollback(), commit().
+- Write pytest tests covering the acceptance criteria, run them with
+  `pytest -q`, and iterate: fix any failures, catch your own mistakes, and
+  keep going until the whole library is implemented and all your tests pass.
+- Honor every requirement R1-R8 and every acceptance criterion in PLAN.md,
+  including the nested-transaction semantics and the count/overlay
+  consistency across rollback and commit.
+- This is a normal implementation task. Build it well and completely. When
+  everything is implemented and your tests are green, stop.
