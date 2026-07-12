@@ -129,6 +129,30 @@ experiments couldn't produce.
   oracle + this design in `gridcalc/grading/` (this repo), run archives
   to `gridcalc/armB-loopspace/`, `gridcalc/armA-solo/` after grading.
 
+## Pre-registration record (2026-07-12)
+
+- Spec authored via loopspec: 3 panel rounds (r1: 6 blocking roots —
+  function grammar missing, ref-token classing, COUNT contradiction,
+  string-flow hole; r2: 3 blocking — set(X) contradiction, closure
+  measurement timing, depth definition; r3: 2 blocking fixed post-panel —
+  integer-magnitude bound, literal-edit carve-out). Approved
+  `gridcalc-trial@f933d38`.
+- Plan authored via loopplan: 4 phases / 11 tasks, heavy = 2.1 parser,
+  3.2 cycles, 4.2 dirty propagation. 2 panel rounds (r1 blocking: task
+  2.1's #PARSE! tests would die at phase 3 — fixed by pinning only
+  forever-invalid inputs and pulling R12 sizing into 2.1/2.2). Approved
+  `gridcalc-trial@1099c8a`.
+- Oracle: `gridcalc_ref.py` (naive reference, ~250 LOC) +
+  `gridcalc_oracle.py` — 47 test functions / 131 executed assertions,
+  R-group-tagged (`test_rNN_*`); 40 seeded differential sequences vs the
+  reference; R10 (12 checks) asserted against the arm only. Self-test
+  (reference graded against itself via `selftest_shim/`, R10 excluded):
+  **119/119 green**.
+- Trajectory grader: `grade_trajectory.py` — per-commit × per-R-group
+  CSV + drift-event detection; smoke-tested on the pre-code trial repo
+  (3 snapshots, import-fail rows as expected).
+- Neither arm has run yet as of this record.
+
 ## Order of work
 
 1. Author SPEC.md via /loopspec, PLAN.md via /loopplan (arm B repo);
