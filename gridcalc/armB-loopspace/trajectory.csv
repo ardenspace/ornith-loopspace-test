@@ -1,0 +1,172 @@
+idx,commit,date,subject,rgroup,passed,failed
+0,b096370d,2026-07-11T23:22:41+09:00,seed: opencode config + loopspace command stubs,other,0,1
+1,f933d38d,2026-07-12T09:02:55+09:00,loopspace: spec approved — gridcalc,other,0,1
+2,1099c8af,2026-07-12T10:33:19+09:00,loopspace: plan approved — gridcalc,other,0,1
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r01,17,1
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r02,0,4
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r03,0,25
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r04,0,5
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r05,0,2
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r06,0,5
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r07,0,7
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r08,0,4
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r09,0,4
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r10,1,11
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r11,0,40
+3,2bdec540,2026-07-12T10:57:28+09:00,loopspace: task 1.1 — Address validation + Sheet skeleton,r12,0,5
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r01,17,1
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r02,3,1
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r03,0,25
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r04,0,5
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r05,0,2
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r06,0,5
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r07,0,7
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r08,0,4
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r09,0,4
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r10,2,10
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r11,0,40
+4,fb2c3a86,2026-07-12T11:09:28+09:00,"loopspace: task 1.2 — Literal values — types, normalization, replacement",r12,0,5
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r01,17,1
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r02,3,1
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r03,0,25
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r04,0,5
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r05,0,2
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r06,0,5
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r07,0,7
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r08,0,4
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r09,0,4
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r10,2,10
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r11,0,40
+5,3635082d,2026-07-12T11:12:26+09:00,loopspace: phase 1 verified,r12,0,5
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r01,17,1
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r02,3,1
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r03,0,25
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r04,0,5
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r05,0,2
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r06,0,5
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r07,0,7
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r08,0,4
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r09,0,4
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r10,2,10
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r11,0,40
+6,bc22cbbe,2026-07-12T13:09:27+09:00,"loopspace: halt resolved — tier C (role-swap), task 2.1 reset",r12,0,5
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r01,17,1
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r02,3,1
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r03,0,25
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r04,0,5
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r05,0,2
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r06,0,5
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r07,0,7
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r08,0,4
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r09,0,4
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r10,2,10
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r11,0,40
+7,af41d197,2026-07-12T13:23:05+09:00,loopspace: task 2.1 — Tokenizer + parser (core grammar),r12,0,5
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r01,18,0
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r02,4,0
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r03,25,0
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r04,5,0
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r05,0,2
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r06,5,0
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r07,0,7
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r08,0,4
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r09,0,4
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r10,3,9
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r11,2,38
+8,1b813430,2026-07-12T13:33:18+09:00,"loopspace: task 2.2 — Evaluator (arithmetic, references, division)",r12,5,0
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r01,18,0
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r02,4,0
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r03,25,0
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r04,5,0
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r05,0,2
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r06,5,0
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r07,0,7
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r08,0,4
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r09,0,4
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r10,3,9
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r11,2,38
+9,b4a021b8,2026-07-12T13:35:50+09:00,loopspace: task 2.3 — Comparisons + error values and propagation,r12,5,0
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r01,18,0
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r02,4,0
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r03,25,0
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r04,5,0
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r05,0,2
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r06,5,0
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r07,0,7
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r08,0,4
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r09,0,4
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r10,3,9
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r11,2,38
+10,9a27f8f2,2026-07-12T13:38:12+09:00,loopspace: phase 2 verified,r12,5,0
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r01,18,0
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r02,4,0
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r03,25,0
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r04,5,0
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r05,0,2
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r06,5,0
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r07,0,7
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r08,0,4
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r09,0,4
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r10,3,9
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r11,2,38
+11,fe19fd53,2026-07-12T13:38:35+09:00,loopspace: advance to phase 3,r12,5,0
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r01,18,0
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r02,4,0
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r03,25,0
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r04,5,0
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r05,0,2
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r06,5,0
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r07,7,0
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r08,4,0
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r09,1,3
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r10,3,9
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r11,11,29
+12,50cf3559,2026-07-12T15:48:00+09:00,loopspace: task 3.1 — Function grammar + SUM/MIN/MAX/COUNT,r12,5,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r01,18,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r02,4,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r03,25,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r04,5,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r05,2,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r06,5,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r07,7,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r08,4,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r09,4,0
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r10,3,9
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r11,33,7
+13,383116a1,2026-07-12T16:03:49+09:00,loopspace: task 3.2 — Circular-reference detection,r12,5,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r01,18,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r02,4,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r03,25,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r04,5,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r05,2,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r06,5,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r07,7,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r08,4,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r09,4,0
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r10,3,9
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r11,33,7
+14,6c50883b,2026-07-12T16:09:38+09:00,loopspace: phase 3 verified,r12,5,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r01,18,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r02,4,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r03,25,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r04,5,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r05,2,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r06,5,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r07,7,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r08,4,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r09,4,0
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r10,10,2
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r11,33,7
+15,d7af1e59,2026-07-12T16:18:31+09:00,"loopspace: task 4.1 — Lazy evaluation, result caching, eval_count",r12,5,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r01,18,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r02,4,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r03,25,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r04,5,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r05,2,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r06,5,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r07,7,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r08,4,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r09,4,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r10,12,0
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r11,33,7
+16,93457e05,2026-07-12T19:56:04+09:00,grader: post-run snapshot — 4.2-4.4 final state left uncommitted by run (not a run commit),r12,5,0

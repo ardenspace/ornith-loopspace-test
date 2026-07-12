@@ -2,6 +2,15 @@
 
 written: 2026-07-12 · 정밀·모호·**heavy 세 축 모두 완료** — correctness 델타 전부 0. loopspace 0.14 carry 재런으로 **응집성 갭 해소 확인**. 다음 = **실험 W(gridcalc, 멀티세션 드리프트) 설계 확정** — `gridcalc/grading/EXPERIMENT.md` (미니 스프레드시트 4 phase, 하룻밤 무인 × 2, solo 자율노트 baseline, 궤적 채점).
 
+## ⏩ UPDATE 2026-07-12 (5) — arm B 완주 + 채점 완료 (oracle 124/131, 드리프트 0), arm A 야간 런 시작
+- **arm B 완주**: run_status complete, 11/11 task done, 자체 테스트 161 green. tier C 전환 후에도 3.1/3.2/4.1은 저널상 `subagent (tier A)`로 성공 — heavy(2.1, 4.2)만 role-swap. 4.2(설계된 트랩)는 attempt 1 PASS (dependency-aware invalidation, `_deps`+closure).
+- **oracle 채점: 124/131 (94.7%)**. 실패 7건 전부 R11 differential, 단일 실패 모드 — 오류값이 담긴 셀을 참조하는 경로에서 `#REF!`/`#CYCLE!`가 `#TYPE!`로 강등(문자열 취급). 궤적상 R11은 한 번도 full green이었던 적 없음 → **회귀가 아니라 phase 2~3부터의 잠복 버그** (3.2가 #CYCLE! 직접 전파를 고쳤지만 일부 경로만).
+- **궤적 채점: 드리프트 이벤트 0** (`gridcalc/armB-loopspace/trajectory.csv`, 17 스냅샷). pass 단조 증가 18→22→67→88→115→122→124. 한 번 green이 된 R-group이 다시 깨진 사례 없음 — phase 4의 평가 경로 재작성에도 조기 요구사항 무손상.
+- **응집성 발견 (arm B, 신규)**: ① **4.2~4.4 커밋 누락** — complete 선언했지만 마지막 3개 task 작업물이 working tree에만 존재(phase-4 HEAD는 4.1). 채점 전 grader 라벨 커밋으로 보존(`gridcalc-trial@93457e0`, run의 커밋 아님을 명시). ② run 브랜치 머지 전무 — `loopspace/gridcalc/run`은 plan 승인 시점에 정지. ③ 4.2 tdd-evidence "tests adjusted to match actual behavior", 4.3/4.4 failed-first 증거 부재 — tier C 구간 test-integrity 약화 신호.
+- **측정 오염 발견+제거**: arm B 런 중 gridcalc가 site-packages에 **editable install**(`pip install -e`, direct_url→gridcalc-trial)로 박혀 있었음 → 코드 없는 스냅샷에서 라이브 repo로 fallback import되어 1차 궤적 채점 오염(idx 0~2가 최종값 124로 나옴). uninstall 후 재채점한 것이 위 결과. **후속 실험 프리플라이트에 `python3 -c "import <pkg>"` 실패 확인 추가할 것.**
+- **arm A(solo) 야간 런 시작**: 2026-07-12 20:00:58 KST, `nohup sh solo_loop.sh`(pid 5416), 세션 1 정상 스트리밍 확인. 프리플라이트: opencode 잔존 0, ornith :18081 서빙 확인. 최대 12세션/8h → 익일 ~04:00 전 종료. 로그 `gridcalc-runner/logs/solo_loop.log`+`session_N.log`, 스냅샷은 세션마다 자동 커밋.
+- **다음**: arm A 종료 확인 → oracle + 궤적 채점(`grade_trajectory.py ~/code/gridcalc-solo`) → 양 arm 아카이브(`gridcalc/arm{A,B}-*`) → EXPERIMENT.md/이 파일에 최종 판정 (사전 등록 기준: primary = 최종 oracle 델타 B−A, secondary = 드리프트 수·세션 수·완주 여부·notes 행태).
+
 ## ⏩ UPDATE 2026-07-12 (4) — 실험 W (gridcalc) 진행 중: arm B가 tier A 좌초 → tier C로 순항
 - **셋업 완료 (전부 커밋됨)**: spec/plan 승인(`gridcalc-trial` f933d38/1099c8a, 패널 수렴 기록은 grading/EXPERIMENT.md), held-out oracle 사전 등록(`cfcc60c`, 131 assertion, self-test 119 green), arm A seed(`~/code/gridcalc-solo` 63938a7), 러너 `~/code/gridcalc-runner/`(armB_supervise.sh / solo_loop.sh / 로그).
 - **arm B 1차 (tier A): 28분 만에 halt.** phase 1은 통과했으나 task 2.1(heavy 파서)에서 implementer 서브에이전트가 3연속 무출력 → 스톨 → halt. **원인 확정(세션 DB)**: ornith가 큰 자율 디스패치에서 reasoning 채널에만 쓰고 본문 없이 턴 종료 → 빈 task_result. 컨텍스트(n_ctx 131k)/프롬프트 크기/좀비 무관. 요구 생각량과 상관: light 통과, 1.2가 1회 반반, 파서 3/3 사망.
