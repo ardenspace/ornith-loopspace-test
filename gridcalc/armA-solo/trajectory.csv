@@ -1,0 +1,14 @@
+idx,commit,date,subject,rgroup,passed,failed
+0,63938a76,2026-07-12T10:42:48+09:00,seed: identical spec+plan (Experiment W arm A),other,0,1
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r01,18,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r02,4,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r03,25,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r04,5,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r05,2,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r06,5,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r07,7,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r08,4,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r09,4,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r10,11,1
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r11,40,0
+1,a8c911fc,2026-07-12T20:40:41+09:00,solo session 1,r12,5,0

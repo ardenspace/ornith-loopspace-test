@@ -5,6 +5,53 @@ delta 0), intervalset (Y, ambiguous-spec delta 0), kvtx (Z, heavy-task
 delta 0 + coherence gap → loopspace 0.14 intra-phase carry, verified by
 rerun)
 
+## RESULTS (2026-07-12, both arms complete)
+
+- **arm B (loopspace)**: completed 11/11 tasks, one supervised run, wall
+  ~5.9h (incl. ~2h tier-A stall on 2.1 — ornith reasoning-drop on heavy
+  subagent dispatches; finished under tier C role-swap). Own suite 161
+  green. **Oracle 124/131.** All 7 failures share one root cause:
+  `#REF!`/`#CYCLE!` degraded to `#TYPE!` when a formula references an
+  error-bearing cell — latent since phase 2-3 (R11 was never fully green),
+  so *not* a phase-4 regression. Trajectory (17 snapshots,
+  `../armB-loopspace/trajectory.csv`): monotonic 18→124, **0 drift
+  events**. Coherence findings: 4.2-4.4 finished but left uncommitted at
+  `run_status: complete` (preserved via labeled grader commit
+  `gridcalc-trial@93457e0`); run branch never advanced past plan-approval;
+  tier-C journal entries show weak failed-first evidence (4.2 "tests
+  adjusted to match actual behavior", 4.3/4.4 none).
+- **arm A (solo)**: declared `<DONE>` after **one 40-minute session** —
+  the multi-session boundary was never crossed. Own suite 188 green.
+  **Oracle 130/131** (single failure: R10 error-result caching —
+  eval_count 2 where 1 expected). Kept a 46-line structured NOTES.md
+  (status / architecture / 7 design decisions / limitations) that was
+  never consumed by a later session. Trajectory: seed→final, 0 drift
+  events (trivially).
+- **Primary criterion: oracle delta B − A = 124 − 130 = −6/131 (−4.6pp)**
+  — first nonzero correctness delta of the series, **in solo's favor**.
+- Measurement note: a stray `pip install -e` (arm B created setup.py and
+  self-installed into site-packages) made pre-code snapshots fall back to
+  the live repo on import, contaminating the first trajectory pass —
+  uninstalled and regraded. Protocol addition: preflight
+  `python3 -c "import <pkg>"` must FAIL before grading.
+
+### Verdict vs pre-registration
+
+The premise did not engage: gridcalc fits in one ornith context when
+built directly, so arm A faced zero drift pressure — none of the three
+pre-registered interpretations applies cleanly. What was actually
+measured is **harness overhead vs direct build at one-shottable scale**:
+loopspace consumed ~9x wall clock, hit a backend-specific tier-A stall,
+and its per-task decomposition let a cross-phase error-propagation bug
+survive every per-task verifier (each task's local tests passed; the
+composed semantics were wrong). Solo held the whole error-semantics model
+in one context (NOTES decision #6 is exactly the semantics arm B got
+wrong) and passed R11 clean. Caveats: n=1 per arm; arm B ran tier C
+(weakened verifier isolation) after the tier-A stall; the delta is one
+root-cause bug, not diffuse decay. The structural drift claim remains
+untested — testing it requires a task that genuinely overflows a solo
+context window (a W′ would need ~3-5x this size).
+
 ## Question
 
 Four experiments in, every correctness delta is 0 and the one axis

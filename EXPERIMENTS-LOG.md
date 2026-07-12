@@ -1,6 +1,12 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-12 · 정밀·모호·**heavy 세 축 모두 완료** — correctness 델타 전부 0. loopspace 0.14 carry 재런으로 **응집성 갭 해소 확인**. 다음 = **실험 W(gridcalc, 멀티세션 드리프트) 설계 확정** — `gridcalc/grading/EXPERIMENT.md` (미니 스프레드시트 4 phase, 하룻밤 무인 × 2, solo 자율노트 baseline, 궤적 채점).
+written: 2026-07-12 · 정밀·모호·heavy·**멀티세션(W) 네 축 완료**. X/Y/Z 델타 0, **W에서 시리즈 첫 비영 델타 −6/131 — solo 우세** (단, 멀티세션 전제 자체가 발동 안 함: solo가 40분 원샷). 상세 = `gridcalc/grading/EXPERIMENT.md` RESULTS 섹션.
+
+## ⏩ UPDATE 2026-07-12 (6) — 실험 W 종료: arm A가 40분 원샷 130/131, 델타 B−A = −6 (solo 우세), 전제 미발동
+- **arm A(solo) 종료**: 세션 1 하나(20:01→20:40, 40분)에 4 phase 전부 구현 후 `<DONE>` — **멀티세션 경계를 한 번도 안 넘음**. 자체 테스트 188 green. **oracle 130/131** (실패 1건: R10 오류 결과 미캐시 — eval_count 2, 기대 1). NOTES.md 46줄 작성했으나(구조·설계결정 7개·한계) 후속 세션이 없어 소비된 적 없음. 궤적: seed→final 2 스냅샷, 드리프트 0.
+- **최종 판정 (사전 등록 primary): oracle 델타 B−A = 124−130 = −6/131 (−4.6pp) — 시리즈 첫 비영 델타, solo 우세.** 단 사전 등록된 3개 해석 어디에도 해당 없음: 과제가 ornith 단일 컨텍스트에 들어가서 드리프트 압력이 발생하지 않았고, 실제로 측정된 것은 "원샷 가능한 규모에서의 하네스 오버헤드 vs 직접 빌드"임. loopspace는 벽시계 ~9x(5.9h vs 40분), tier A 좌초 1회, 그리고 **per-task 분해가 크로스-phase 오류 전파 버그(#REF!/#CYCLE!→#TYPE!)를 모든 per-task verifier 통과 하에 살려 보냄** — solo는 오류 의미론 전체를 한 컨텍스트에 들고 있어 R11 클린(NOTES 설계결정 #6이 정확히 arm B가 틀린 지점). 유보: arm당 n=1, arm B는 tier C(검증 격리 약화) 완주, 델타는 분산 부패가 아니라 단일 근원 버그.
+- **구조적 드리프트 주장 자체는 미검증으로 남음** — 검증하려면 solo 컨텍스트를 실제로 넘치게 하는 과제 필요(W′ ≈ 이번의 3~5x 규모). 시리즈 정직 결산: 4 실험 중 correctness에서 loopspace 우위 증거 0, 반대 방향 증거 1 (원샷 가능 규모 한정).
+- **아카이브 완료**: `gridcalc/armA-solo/`, `gridcalc/armB-loopspace/`(트리+`.loopspace/`), runner 스크립트 3종 + `runner-logs/`(supervisor·session 로그, tier A 좌초 증거 포함). arm B의 `setup.py`+egg-info는 오염 원인 증거로 보존.
 
 ## ⏩ UPDATE 2026-07-12 (5) — arm B 완주 + 채점 완료 (oracle 124/131, 드리프트 0), arm A 야간 런 시작
 - **arm B 완주**: run_status complete, 11/11 task done, 자체 테스트 161 green. tier C 전환 후에도 3.1/3.2/4.1은 저널상 `subagent (tier A)`로 성공 — heavy(2.1, 4.2)만 role-swap. 4.2(설계된 트랩)는 attempt 1 PASS (dependency-aware invalidation, `_deps`+closure).

@@ -1,0 +1,11 @@
+Read SPEC.md and PLAN.md in /Users/arden/code/gridcalc-solo and continue
+building the project in that directory until it is complete. The repo's
+current state is your work so far — inspect it before writing anything.
+Follow the plan's phases and acceptance criteria; run the tests with
+`pytest -q` from the repo root. You MAY create and maintain a free-form
+progress-notes file (for example NOTES.md) to carry context between work
+sessions if you find that useful — it is allowed, not required. Do not
+modify SPEC.md or PLAN.md. When you judge every requirement implemented
+and the full test suite green, print exactly <DONE> as the last line of
+your final message. If work remains, simply stop when you have made good
+progress — a later session will continue from the repo state.
