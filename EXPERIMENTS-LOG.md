@@ -1,6 +1,14 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-11 · 정밀·모호·**heavy 세 축 모두 완료** — correctness 델타 전부 0. loopspace 0.14 carry 재런으로 **응집성 갭 해소 확인**. 다음 = **실험 W(gridcalc, 멀티세션 드리프트) 설계 확정** — `gridcalc/grading/EXPERIMENT.md` (미니 스프레드시트 4 phase, 하룻밤 무인 × 2, solo 자율노트 baseline, 궤적 채점).
+written: 2026-07-12 · 정밀·모호·**heavy 세 축 모두 완료** — correctness 델타 전부 0. loopspace 0.14 carry 재런으로 **응집성 갭 해소 확인**. 다음 = **실험 W(gridcalc, 멀티세션 드리프트) 설계 확정** — `gridcalc/grading/EXPERIMENT.md` (미니 스프레드시트 4 phase, 하룻밤 무인 × 2, solo 자율노트 baseline, 궤적 채점).
+
+## ⏩ UPDATE 2026-07-12 (4) — 실험 W (gridcalc) 진행 중: arm B가 tier A 좌초 → tier C로 순항
+- **셋업 완료 (전부 커밋됨)**: spec/plan 승인(`gridcalc-trial` f933d38/1099c8a, 패널 수렴 기록은 grading/EXPERIMENT.md), held-out oracle 사전 등록(`cfcc60c`, 131 assertion, self-test 119 green), arm A seed(`~/code/gridcalc-solo` 63938a7), 러너 `~/code/gridcalc-runner/`(armB_supervise.sh / solo_loop.sh / 로그).
+- **arm B 1차 (tier A): 28분 만에 halt.** phase 1은 통과했으나 task 2.1(heavy 파서)에서 implementer 서브에이전트가 3연속 무출력 → 스톨 → halt. **원인 확정(세션 DB)**: ornith가 큰 자율 디스패치에서 reasoning 채널에만 쓰고 본문 없이 턴 종료 → 빈 task_result. 컨텍스트(n_ctx 131k)/프롬프트 크기/좀비 무관. 요구 생각량과 상관: light 통과, 1.2가 1회 반반, 파서 3/3 사망.
+- **tier C(role-swap) 전환으로 해소** (halt-resume, `bc22cbb`): 전환 후 2.1이 attempt 1에 통과 — R12 조기화 덕에 iterative shunting-yard 선택. 이후 2.2→4.1까지 전부 attempt 1 PASS, phase 2·3 verified. 핸드오프 시점 기준 4.2(설계된 트랩) 진행 중, 남은 태스크 4.2/4.3/4.4. **판정 유의: arm B는 tier A가 아니라 C로 완주하게 됨 — "tier 시스템이 약한 백엔드를 흡수했다"는 관측이자, 독립 검증 격리는 약화된 상태(정직하게 보고할 것). correctness 채점은 oracle이 하므로 오염 없음.**
+- **부수 발견 (loopspace/ornith 후속감)**: ① 0d2cd3a 문구 보강에도 계약 문장 디스패치 누락 여전(0건) — 문구로는 못 고침, 더 강한 처방 필요. ② PRIOR WORK 블록에 phase 경계 넘은 태스크 포함(스펙상 intra-phase 전용). ③ stubborn 분류 후 diversity burst 생략 + report trigger 불일치(journal stubborn vs report external-blocker). ④ state.md 헤더(current_phase/task) 갱신 누락 — 표/저널/커밋은 정상.
+- **운영**: supervisor는 Claude 세션에 묶으면 죽는다(2회 killed) → **nohup 분리 실행**이 정답: `nohup sh ~/code/gridcalc-runner/armB_supervise.sh > ~/code/gridcalc-runner/logs/armB_supervise.log 2>&1 &`. 상태 진실은 `gridcalc-trial/.loopspace/state.md`+journal.
+- **다음 순서**: ① arm B 종료 확인(complete/halt) → 저널 분석 ② oracle 채점 `PYTHONPATH=~/code/gridcalc-trial python3 -m pytest gridcalc/grading/gridcalc_oracle.py -q` ③ 밤 2 = arm A `sh ~/code/gridcalc-runner/solo_loop.sh` (사전 `pkill -9 -f opencode` + ornith 확인) ④ 양쪽 궤적 채점 `python3 gridcalc/grading/grade_trajectory.py <repo> --branch <branch>` ⑤ 아카이브 + EXPERIMENT.md/LOG 결과 기록.
 
 ## ⏩ UPDATE 2026-07-11 (3) — intra-phase carry 수리 검증 재런 (kvtx-rerun): 응집성 갭 해소 확인
 - **배경**: kvtx의 코드 응집성 갭(fresh-agent 격리 → 1.2가 `Store` 존재를 모르고 `Database` 통재구현, dead `Store`+`_vk`, 135 vs 60 LOC)을 loopspace **0.14.0 "intra-phase carry"**로 수리 — implementer `exports:` 자가보고 + 디스패치마다 PRIOR WORK THIS PHASE 블록(저널에서 조립, diet 유지) + 양층 중복 강제(태스크 verifier check + phase verifier blocking check). 머지 `4f91830`, 리뷰 후속 `d21f392`(reuse 체크가 자가보고 라인이 아니라 트리를 보고 판정 — 과대보고 export의 false FAIL 경로 차단).
