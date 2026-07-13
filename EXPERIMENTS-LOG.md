@@ -1,6 +1,14 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-13 · 정밀·모호·heavy·**멀티세션(W) 네 축 완료**. X/Y/Z 델타 0, **W에서 시리즈 첫 비영 델타 −6/131 — solo 우세** (단, 멀티세션 전제 자체가 발동 안 함: solo가 40분 원샷). 후속: W의 실패 분석 → **loopspace 0.15.0 수리 + 검증 재런 진행 중** (아래 UPDATE 7). 상세 = `gridcalc/grading/EXPERIMENT.md` RESULTS 섹션.
+written: 2026-07-13 · 정밀·모호·heavy·멀티세션(W) 네 축 + **0.15.0 검증 재런(UPDATE 8)** 완료. X/Y/Z 델타 0, W는 −6/131 solo 우세, **재런은 106/131로 더 나쁨** — 단 "같은-마음 사각지대" 테제의 최강 증거(레퍼런스에 버그 복제) + 이행-공백 발견 3건 획득. 상세 = `gridcalc/grading/EXPERIMENT.md` RERUN RESULTS.
+
+## ⏩ UPDATE 2026-07-13 (8) — 0.15.0 검증 재런 종료: oracle 106/131 (양 기준선보다 악화), 그러나 테제 최강 실증 + 발견 3건
+- **판정 (사전 등록 대비)**: 강한 성공(phase 3 경계 프로브가 버그 FAIL) 미충족 — **ornith가 phase 3 경계를 통째 스킵**해 프로브가 호출되지 못함. oracle 106/131 (solo 130, 원런 124). 근원 3: R7 혼합 mis-ordered range(사전식 비교), 사이클×캐시 stale, R10 카운트 이상. 벽시계 ~11h 중 6.5h는 세션 행(운영자 hang-kill 1회), 종료는 complete 아닌 STUCK(마무리 장부 실패, grader 커밋으로 보존).
+- **백미**: 4.4가 이번엔 진짜 NaiveSheet 레퍼런스를 만들었는데 **자기 버그(사전식 비교)를 글자까지 복제** → 1000 시퀀스 zero mismatches. 같은 마음의 "독립" 레퍼런스는 검증이 아니다 — held-out oracle만 잡음. 추가로 **출하-버그 교차 변이: 혼합 mis-order를 세 arm 자체 스위트가 전부 못 잡음**(같은 모델 = 인스턴스 달라도 같은 맹점).
+- **0.15.0 자체는 발화 지점에서 작동**: phase 1·2 프로브·변이 완전 이행, 3.2 heavy 패널이 실버그 2개 잡아 재시도 강제(원런의 강등 버그가 재런엔 구조적으로 부재한 직접 원인), 재런 스위트는 오류-전파 계열 방패 최강(M8 변이 31 kill vs solo 5). **실패한 것은 호출 순응** — 버그들은 정확히 경계 스킵/부분 이행 구간(phase 3·4 의미론)에 서식.
+- **발견 3건 (0.15.1 처방으로 태스크 등록)**: ① phase 경계 의무가 세션 제어 흐름에만 존재 — 세션이 "마지막 태스크 done" 직후 죽으면 재개 세션이 경계를 건너뜀 → 상태-도출 체크 필요. ② supervisor 행 사각지대 — 죽지 않고 헛도는 세션은 progress 체크(프로세스 종료 시에만)로 못 잡음 → liveness 타임아웃. ③ heavy 패널 생략(4.2 단일 verifier 통과) 등 이행 표류 전반 — 이행을 프롬프트 순응이 아니라 기계로 강제하는 방향.
+- **시리즈 결산 (5런)**: 유능한 단일 컨텍스트가 감당하는 규모에선 solo가 비용·출하품질 모두 우위 — 확정적. loopspace의 실증된 값 = 기획 파이프라인(spec/plan), 프로세스 무결성 개입(TDD 적발·패널 FAIL), 크래시 생존(행 kill 후 미커밋 작업 승계 완주). 미검증 잔여 = 컨텍스트 초과 규모(W′). 로컬 35B는 오케스트레이터로 부적합 판정에 근접(이행 순응이 병목).
+- 아카이브: `gridcalc/rerun-loopspace-0.15/`(트리+.loopspace), `runner-logs/rerun_supervise.log`, 채점·변이 도구 `grading/mutate*.py`. 상세 데이터 전부 `grading/EXPERIMENT.md` RERUN RESULTS.
 
 ## ⏩ UPDATE 2026-07-13 (7) — W 실패 분석 정밀화 → loopspace 0.15.0 수리 + 검증 재런 발사 (진행 중)
 - **진단 교정 (실물 확인)**: "크로스-phase 의미론이 acceptance에 없었다"는 프레임은 오진. ① 버그 지점 단일 — `_eval_sum_min_max`가 range 멤버의 formula-cell 오류 결과(#REF!/#CYCLE!/#DIV!)를 무조건 #TYPE!로 강등 (`armB-loopspace/gridcalc/evaluator.py:167-169`; 직접 REF 경로 72-76은 정상 전파 → oracle 실패 7건 전부 range 경로). ② 그 의미론은 **task 3.1 acceptance에 있었음** ("first error in visit order wins…") — 구현자가 최약 케이스(string cell #TYPE!, 강등이 안 보이는 유일한 케이스)로만 인스턴스화, tier A verifier의 criteria→tests 매핑이 커버리지로 인정. ③ **task 4.4 acceptance는 naive full-recompute 레퍼런스 differential을 명시 요구** ("references, functions, errors, and cycles 포함… zero mismatches") — 실물 `tests/test_differential.py`(51줄)는 레퍼런스 0, `=INT op INT` 리터럴만 생성, mismatch 정의가 "결과가 int/str 아님"(공허). 이 빈껍데기가 tier C verifier PASS, phase 4 verifier는 "R11: verified by existing test suite"로 세탁. **구조적 맹점 = 구현과 테스트가 공유하는 오류** — 검증 도구 전부가 구현자 계보. oracle이 잡은 유일한 이유 = 다른 마음이 spec에서 독립 도출.
