@@ -16,6 +16,7 @@ rerun)
   - 이행 관측: 경계 부채·stale-handoff freshness 발동 여부(세션이 안 죽으면 무발동이 정상), fast-fail 무발동 기대, tier 자가 변경·패널 생략 재발 여부.
   - 실패 모드 해석: 완주했는데 oracle이 solo에 크게 못 미치면 → "파편화 자체 해악"의 최초 직접 증거로 등록.
 - **프리플라이트 (2026-07-13)**: editable-install 오염 제거(재런이 남긴 `pip install -e` → gridcalc-rerun 지향; --break-system-packages로 uninstall, 중립 cwd에서 import 실패 확인), opencode 좀비 0, ornith :18081 서빙 확인, 시드 2커밋 + `loopspace/gridcalc/run` 브랜치 체크아웃. ~~잔여 블로커: 인증~~ → OpenAI ChatGPT OAuth 등록 완료(2026-07-14), gpt-5.5 텍스트+툴 스모크 통과. **발사: 2026-07-14** (`runner-logs/hybrid_supervise.log`).
+- **중간 사건 1 (발사 ~1h, task-stall halt @ 2.1)**: phase 1은 교과서 이행 — verifier(GPT)가 1.1을 3연속 FAIL(invalid-address `set` 커버리지, failed-first TDD 증거 요구) 후 burst로 통과, **phase 1 경계 완전 이행**(프로브 4 + 변이 2 "went red" + 경계 커밋 + phase-2 브랜치). task 2.1(heavy 파서)에서 **ornith 구현자 6/6 빈 보고서 사망** — armB 1차 tier A의 2.1 reasoning-드롭 서명 그대로. **오케스트레이터를 GPT로 바꿔도 재현 → ornith heavy-디스패치 사망은 모델 속성으로 변수통제 확정.** 오케스트레이터는 절차대로 halt(보고서+선택지 3). 운영 결정: **Option B(2.1을 작은 파서 서브태스크로 재계획) 채택**(사용자 AFK, 설계 보존 우선) — halt-resume 세션 + supervisor 재부착 (2026-07-14).
 
 ## RERUN RESULTS (2026-07-13, loopspace 0.15.0 validation — 사전 등록 기준 미충족, 대신 테제의 최강 증거 획득)
 
