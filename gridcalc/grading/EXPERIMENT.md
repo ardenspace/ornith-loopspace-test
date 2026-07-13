@@ -7,7 +7,7 @@ rerun)
 
 ## HYBRID RERUN PRE-REGISTRATION (2026-07-13, 발사 대기 — anthropic 인증만 남음)
 
-- **셋업**: `~/code/gridcalc-hybrid` — spec+plan을 재런 시드(`gridcalc-rerun@9d48592`)에서 verbatim 복사, loopspace **0.15.2**(`64eeb45`), **tier A**(프로파일 정합 — 재런의 tier C는 ornith 오케스트레이터 한계 때문이었고 이번엔 불필요). 라우팅: 오케스트레이터+verifier = `anthropic/claude-sonnet-5`, implementer = ornith 35B (opencode agent 설정: `implementer`/`verifier` 서브에이전트 분리, 프로젝트 opencode.json). ornith 클라이언트 타임아웃 300s→**900s**(0.15.0 재런 사망 원인 직접 처방). 러너 `gridcalc/hybrid_supervise.sh` (supervise.sh 0.15.2 래핑: stall kill 3600s + fast-fail 3×60s 명시).
+- **셋업**: `~/code/gridcalc-hybrid` — spec+plan을 재런 시드(`gridcalc-rerun@9d48592`)에서 verbatim 복사, loopspace **0.15.2**(`64eeb45`), **tier A**(프로파일 정합 — 재런의 tier C는 ornith 오케스트레이터 한계 때문이었고 이번엔 불필요). 라우팅: 오케스트레이터+verifier = `openai/gpt-5.5`(ChatGPT OAuth — Anthropic은 opencode OAuth 미지원이라 교체; OAuth 백엔드가 gpt-5.6·codex-spark를 거부해 Codex CLI가 쓰는 gpt-5.5로 확정, 텍스트+툴 스모크 통과. 교차-마음 조건 동일 충족 — 구현자 ornith / verifier GPT / oracle 저자 Claude로 **세 마음 분리**가 오히려 깨끗해짐), implementer = ornith 35B (opencode agent 설정: `implementer`/`verifier` 서브에이전트 분리, 프로젝트 opencode.json). ornith 클라이언트 타임아웃 300s→**900s**(0.15.0 재런 사망 원인 직접 처방). 러너 `gridcalc/hybrid_supervise.sh` (supervise.sh 0.15.2 래핑: stall kill 3600s + fast-fail 3×60s 명시).
 - **0.15.0 재런 대비 변수**: loopspace 버전, 오케스트레이터·verifier 모델, tier, 타임아웃 — 다변수 n=1이므로 해석은 방향만. 목적 자체가 "타임아웃 계급 제거 + 순응 좋은 오케스트레이터에서 메커니즘이 뭘 하는가"의 관측.
 - **oracle v2 (2026-07-13 보강)**: 리터럴 오류문자열 3 테스트 추가(r02 roundtrip, r06 참조 시 #TYPE! 연료, r08 range 내 취급) — 총 **134**. selftest(레퍼런스, r10 제외) 122 green. **재채점 기준선: solo 133/134, armB 126/134(신규 중 r06 실패), 0.15.0 재런 107/134(r06·r08 실패)** — 신규 테스트가 기존 프로브에서 본 위반과 정확히 일치하게 변별.
 - **사전 등록 기준**:
@@ -15,7 +15,7 @@ rerun)
   - 교차-마음 검증 관측: frontier verifier가 ornith 구현의 M7류(혼합 mis-ordered range) 계열 맹점을 독립 인스턴스화/프로브에서 도출·적발하는지 — 같은-마음 테제의 처방("verifier만 다른 모델") 검증.
   - 이행 관측: 경계 부채·stale-handoff freshness 발동 여부(세션이 안 죽으면 무발동이 정상), fast-fail 무발동 기대, tier 자가 변경·패널 생략 재발 여부.
   - 실패 모드 해석: 완주했는데 oracle이 solo에 크게 못 미치면 → "파편화 자체 해악"의 최초 직접 증거로 등록.
-- **프리플라이트 (2026-07-13)**: editable-install 오염 제거(재런이 남긴 `pip install -e` → gridcalc-rerun 지향; --break-system-packages로 uninstall, 중립 cwd에서 import 실패 확인), opencode 좀비 0, ornith :18081 서빙 확인, 시드 2커밋 + `loopspace/gridcalc/run` 브랜치 체크아웃. **잔여 블로커: opencode anthropic 인증**(크리덴셜 0개 — `opencode auth login` 필요).
+- **프리플라이트 (2026-07-13)**: editable-install 오염 제거(재런이 남긴 `pip install -e` → gridcalc-rerun 지향; --break-system-packages로 uninstall, 중립 cwd에서 import 실패 확인), opencode 좀비 0, ornith :18081 서빙 확인, 시드 2커밋 + `loopspace/gridcalc/run` 브랜치 체크아웃. ~~잔여 블로커: 인증~~ → OpenAI ChatGPT OAuth 등록 완료(2026-07-14), gpt-5.5 텍스트+툴 스모크 통과. **발사: 2026-07-14** (`runner-logs/hybrid_supervise.log`).
 
 ## RERUN RESULTS (2026-07-13, loopspace 0.15.0 validation — 사전 등록 기준 미충족, 대신 테제의 최강 증거 획득)
 
