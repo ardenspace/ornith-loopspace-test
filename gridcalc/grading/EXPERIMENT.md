@@ -5,6 +5,18 @@ delta 0), intervalset (Y, ambiguous-spec delta 0), kvtx (Z, heavy-task
 delta 0 + coherence gap → loopspace 0.14 intra-phase carry, verified by
 rerun)
 
+## HYBRID RERUN PRE-REGISTRATION (2026-07-13, 발사 대기 — anthropic 인증만 남음)
+
+- **셋업**: `~/code/gridcalc-hybrid` — spec+plan을 재런 시드(`gridcalc-rerun@9d48592`)에서 verbatim 복사, loopspace **0.15.2**(`64eeb45`), **tier A**(프로파일 정합 — 재런의 tier C는 ornith 오케스트레이터 한계 때문이었고 이번엔 불필요). 라우팅: 오케스트레이터+verifier = `anthropic/claude-sonnet-5`, implementer = ornith 35B (opencode agent 설정: `implementer`/`verifier` 서브에이전트 분리, 프로젝트 opencode.json). ornith 클라이언트 타임아웃 300s→**900s**(0.15.0 재런 사망 원인 직접 처방). 러너 `gridcalc/hybrid_supervise.sh` (supervise.sh 0.15.2 래핑: stall kill 3600s + fast-fail 3×60s 명시).
+- **0.15.0 재런 대비 변수**: loopspace 버전, 오케스트레이터·verifier 모델, tier, 타임아웃 — 다변수 n=1이므로 해석은 방향만. 목적 자체가 "타임아웃 계급 제거 + 순응 좋은 오케스트레이터에서 메커니즘이 뭘 하는가"의 관측.
+- **oracle v2 (2026-07-13 보강)**: 리터럴 오류문자열 3 테스트 추가(r02 roundtrip, r06 참조 시 #TYPE! 연료, r08 range 내 취급) — 총 **134**. selftest(레퍼런스, r10 제외) 122 green. **재채점 기준선: solo 133/134, armB 126/134(신규 중 r06 실패), 0.15.0 재런 107/134(r06·r08 실패)** — 신규 테스트가 기존 프로브에서 본 위반과 정확히 일치하게 변별.
+- **사전 등록 기준**:
+  - Primary: oracle v2 134 채점. 강한 성공 = 완주 + 전 phase 경계 프로브·변이 실행 증거(저널) + oracle ≥ armB(126); solo(133)급이면 "순응 유지 시 루프 오버헤드 ≈ 0" 실증.
+  - 교차-마음 검증 관측: frontier verifier가 ornith 구현의 M7류(혼합 mis-ordered range) 계열 맹점을 독립 인스턴스화/프로브에서 도출·적발하는지 — 같은-마음 테제의 처방("verifier만 다른 모델") 검증.
+  - 이행 관측: 경계 부채·stale-handoff freshness 발동 여부(세션이 안 죽으면 무발동이 정상), fast-fail 무발동 기대, tier 자가 변경·패널 생략 재발 여부.
+  - 실패 모드 해석: 완주했는데 oracle이 solo에 크게 못 미치면 → "파편화 자체 해악"의 최초 직접 증거로 등록.
+- **프리플라이트 (2026-07-13)**: editable-install 오염 제거(재런이 남긴 `pip install -e` → gridcalc-rerun 지향; --break-system-packages로 uninstall, 중립 cwd에서 import 실패 확인), opencode 좀비 0, ornith :18081 서빙 확인, 시드 2커밋 + `loopspace/gridcalc/run` 브랜치 체크아웃. **잔여 블로커: opencode anthropic 인증**(크리덴셜 0개 — `opencode auth login` 필요).
+
 ## RERUN RESULTS (2026-07-13, loopspace 0.15.0 validation — 사전 등록 기준 미충족, 대신 테제의 최강 증거 획득)
 
 - **셋업**: `~/code/gridcalc-rerun` (아카이브 `../rerun-loopspace-0.15/`), arm B와 동일 spec+plan, 유일 변수 = loopspace 0.15.0 (spec 프로브 + 변이 스팟체크 + verifier 독립 인스턴스화). tier C 시드(원런 완주 구성) — ornith가 중간에 **스스로 tier A로 승격**. 세션 6개, 벽시계 ~11h — 그중 **6.5h는 세션 3 행**(출력 없는 LLM 호출 루프, 파일 무변화; supervisor는 프로세스 생존 중엔 무진전을 못 봄 → 운영자 개입 1회: 17:48 KST hang kill). 종료도 complete가 아니라 **STUCK exit**(전 태스크 done·phase 4 verified인데 세션 5·6이 마무리 장부를 못 함; 4.2-4.4 미커밋 → grader 커밋 483184b로 보존). 런 중 `pip install -e` 오염 재발(제거 후 채점).

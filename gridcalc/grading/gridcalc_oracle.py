@@ -276,6 +276,36 @@ def test_r08_string_in_range_types_sum_min_max_not_count():
         assert s.get("C5") == exp
 
 
+def test_r02_error_looking_string_literal_roundtrip():
+    # Non-Goals: "a string literal is always a string … never treated as an
+    # error value"; get returns the stored str unchanged.
+    s = Sheet()
+    for lit in ("#REF!", "#DIV!", "#CYCLE!", "#PARSE!", "#TYPE!"):
+        s.set("A1", lit)
+        assert s.get("A1") == lit
+
+
+def test_r06_literal_error_string_is_type_fuel_not_error():
+    # A cell holding the *string* "#REF!" is #TYPE! fuel in numeric
+    # contexts — referencing it must not propagate it as an error value.
+    s = Sheet()
+    s.set("A1", "#REF!")
+    s.set("B1", "=A1")
+    s.set("B2", "=A1+1")
+    assert s.get("B1") == "#TYPE!"
+    assert s.get("B2") == "#TYPE!"
+
+
+def test_r08_literal_error_string_in_range():
+    s = Sheet()
+    s.set("A1", 1)
+    s.set("A2", "#DIV!")  # string literal, not an error value
+    for f, exp in (("SUM", "#TYPE!"), ("MIN", "#TYPE!"), ("MAX", "#TYPE!"),
+                   ("COUNT", 2)):
+        s.set("C5", f"={f}(A1:A2)")
+        assert s.get("C5") == exp
+
+
 def test_r08_count_structural():
     s = Sheet()
     s.set("A1", 1)
