@@ -2,6 +2,11 @@
 
 written: 2026-07-14 · 시리즈 6런 완료. 최신 = **하이브리드 재런(UPDATE 10): frontier 오케스트레이터·verifier × ornith 구현자, oracle v2 119/134 완주** — 교차-마음 verifier가 M7·stale-캐시 두 출하-버그 클래스를 루프 내 차단(M7·M8 변이 자체 스위트 KILL, 시리즈 최초), 유일 출하 버그는 GPT-구현·GPT-검증 페어링 지점(같은-마음 사각지대의 frontier 승격). 상세 = `gridcalc/grading/EXPERIMENT.md` HYBRID RESULTS.
 
+## ⏩ UPDATE 2026-07-15 (12) — loopspace 0.16.0: 열린 논점 ①·② 종결 (halt 8건 중 기계적 6건을 근원 제거)
+- **halt 8건 분류가 설계의 출발점**: 기계적 6(라우팅 에스컬레이션 2 — 두 번째는 사람도 "선례 적용"이라 명기 / 좁은 재개 3 — 전부 재개 후 1~2시도 통과, halt가 수렴 중인 수리를 끊은 것 / 경계-초과 교착 1) + 진짜 사람 몫 2(인프라 수리, 재계획 구조 선택). **처방 = 대행이 아니라 근원 제거** — 핸드오프의 "LLM 결정 대행자 훅" 안은 기각(거버넌스 층에 러버스탬프 재도입 = 시리즈가 방금 증명한 위험).
+- **0.16.0 내용 5조각** (`loopspace@7785d5f` main 머지, 푸시·태그 대기): ① pre-existing 경로 — 대상 동작이 이미 트리에 있으면 "임시 제거→red→복원"이 표준 failed-first 루트(템플릿 A `pre-existing:` 라인 + B/D verifier 짝 분기: 기계적 stash 검사를 선행 태스크 파일까지 확장, 안 하면 정직한 구현자가 오탐 FAIL — 사건 4의 기전) ② stall 정책 relief 게이트: 좁은 재개(findings 단조 감소 + 전부 구체적이면 halt 대신 attempts 리셋; **burst 앞** — burst는 트리를 리셋해 수렴 작업을 파괴) → burst → 에스컬레이션 사다리(`implementer_fallback:` state 필드, verifier 라우팅 불변) — 각 태스크당 1회, 저널 항목이 가드(스키마 무변경) ③ panel debt — done인데 3렌즈 평결 없는 heavy 태스크는 다음 디스패치 전 누락 렌즈 실행(재런 잔여 봉쇄) ④ loopplan 밀도 규칙 — 무작위/differential criterion은 충돌-밀집 도메인 수치 명시 의무 ⑤ supervise halt 알림에 report의 trigger+Blocker+Options 탑재(1500B 절단) — 폰으로 결정 가능. supervise 테스트 22/22(신규 3, TDD red 확인), portability 34/34.
+- 남은 열린 논점 1건: **W′ spec** (3~5x 규모, 시리즈 유일 미검증 핵심 주장). 0.16이 W′ 무인 런의 전제 작업.
+
 ## ⏩ UPDATE 2026-07-15 (11) — 열린 논점 ④·⑤ 종결: harnesses 모델 능력 가이드 갱신, oracle 밀도 재확인(변경 불필요)
 - **④ loopspace 문서 반영** (`docs/harness-support.md` + `harnesses/opencode.md`): 30B-class 로컬 코더 = 구현자 유효(작은 브리프 + 캡 30000/타임아웃 900s — 기본값의 절단·타임아웃이 순응 실패로 위장한다는 교훈 명시), 오케스트레이터는 "부적합"이 아니라 **"미검증"으로 완화**(인프라 정정 반영), **verifier는 구현자와 다른 혈통 필수 — frontier 포함**(하이브리드 유일 출하 버그 = 런의 유일한 same-lineage 페어링 지점, 명문화). OpenCode 지원 매트릭스 unverified → verified(mini-run 07-10 + hybrid 완주 07-14, heavy 패널·halt 8회 이행). opencode.md의 "heavy panel 미검증" 문구 제거.
 - **⑤ oracle 밀도 재확인 — 변경 불필요로 종결**: oracle R11은 이미 12셀 밀집 영역(A–C × 1–4, 시드 40 × 60 ops). R11 밀도 교훈(주소 풀 200셀이면 무딤)이 oracle에는 애초에 반영된 형태 — 핸드오프의 추정("현 12셀 유지가 정답") 확인.
