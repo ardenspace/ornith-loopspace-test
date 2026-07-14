@@ -2,6 +2,11 @@
 
 written: 2026-07-14 · 시리즈 6런 완료. 최신 = **하이브리드 재런(UPDATE 10): frontier 오케스트레이터·verifier × ornith 구현자, oracle v2 119/134 완주** — 교차-마음 verifier가 M7·stale-캐시 두 출하-버그 클래스를 루프 내 차단(M7·M8 변이 자체 스위트 KILL, 시리즈 최초), 유일 출하 버그는 GPT-구현·GPT-검증 페어링 지점(같은-마음 사각지대의 frontier 승격). 상세 = `gridcalc/grading/EXPERIMENT.md` HYBRID RESULTS.
 
+## ⏩ UPDATE 2026-07-15 (11) — 열린 논점 ④·⑤ 종결: harnesses 모델 능력 가이드 갱신, oracle 밀도 재확인(변경 불필요)
+- **④ loopspace 문서 반영** (`docs/harness-support.md` + `harnesses/opencode.md`): 30B-class 로컬 코더 = 구현자 유효(작은 브리프 + 캡 30000/타임아웃 900s — 기본값의 절단·타임아웃이 순응 실패로 위장한다는 교훈 명시), 오케스트레이터는 "부적합"이 아니라 **"미검증"으로 완화**(인프라 정정 반영), **verifier는 구현자와 다른 혈통 필수 — frontier 포함**(하이브리드 유일 출하 버그 = 런의 유일한 same-lineage 페어링 지점, 명문화). OpenCode 지원 매트릭스 unverified → verified(mini-run 07-10 + hybrid 완주 07-14, heavy 패널·halt 8회 이행). opencode.md의 "heavy panel 미검증" 문구 제거.
+- **⑤ oracle 밀도 재확인 — 변경 불필요로 종결**: oracle R11은 이미 12셀 밀집 영역(A–C × 1–4, 시드 40 × 60 ops). R11 밀도 교훈(주소 풀 200셀이면 무딤)이 oracle에는 애초에 반영된 형태 — 핸드오프의 추정("현 12셀 유지가 정답") 확인.
+- 남은 열린 논점 3건: loopspace 0.16 후보 3건 / halt 결정 대행 설계 / W′ spec.
+
 ## ⏩ UPDATE 2026-07-14 (10) — 하이브리드 재런 완주: 처방("verifier만 다른 혈통") 실증, oracle 119/134, 같은-마음 테제 3형태 완성
 - **완주**: 13 태스크/4 phase, `run complete` 정상 종료(STUCK 아님), 전 phase 경계 프로브·변이 완전 이행, halt 8회 전부 규정 halt(운영자 8결정: 캡 30000 상향, 2.1·4.2 frontier 라우팅, coverage-only 예외, 좁은 재개들). 벽시계 ~12h.
 - **★ 사전 등록 관측 2/2 적중**: ① 3.1에서 GPT verifier가 M7 맹점(B1:A2 혼합 역순 — 세 same-mind 스위트 전부 SURVIVED)을 라이브 적발·테스트 강제 → **M7 변이 자체 스위트 KILL(시리즈 최초)** ② 4.2에서 stale-캐시 클래스(재런 출하 버그 2번) 구체 재현으로 차단. M8 변이도 KILL. 신규 리터럴 오류문자열 oracle 3건 전부 통과.
