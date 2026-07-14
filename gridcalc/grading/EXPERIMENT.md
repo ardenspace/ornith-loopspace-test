@@ -5,6 +5,15 @@ delta 0), intervalset (Y, ambiguous-spec delta 0), kvtx (Z, heavy-task
 delta 0 + coherence gap → loopspace 0.14 intra-phase carry, verified by
 rerun)
 
+## HYBRID RESULTS (2026-07-14, complete — 사전 등록 관측 2/2 적중, M7·M8 모두 자체 스위트가 KILL, oracle 119/134)
+
+- **완주**: 13 태스크(재계획 포함)/4 phase, **`run complete` 정상 종료**(재런의 STUCK과 대조 — 마무리 장부 완결, 클린 트리, 최종 커밋 `82a5a07`). 전 phase 경계 완전 이행: `probes_phase_{1,2,3,4}.py` 전부 실재 + 경계당 변이 2건 red + freshness/structure-note 활용. halt 8회(전부 규정 halt, 운영자 결정으로 재개) — 인프라 2(출력 캡 절단→30000 상향, 900s 타임아웃 트레이드오프), 역량 2(2.1·4.2 → 6디스패치 소진 후 frontier 라우팅), 설계 함정 1(경계 초과 구현→failed-first 교착), 검증 마찰 3(좁은 재개로 해소). 벽시계 ~12h.
+- **oracle v2: 119/134** — solo 133 > armB 126 > **hybrid 119** > 재런 107. 실패 15건 전부 R11 differential(40 중 15), **단일 근원 코드 확정**: 의존성 평가 경로로 캐시된 셀은 closure 미등록 → closure-기반 무효화가 영원히 못 닿음 → stale 값/#DIV!/#CYCLE! (재현: seed 0, op52 `set C4,2`가 캐시의 C4=-1을 못 지움; 최소 메커니즘 = `_cache` 기록은 evaluate() 내부, `_closures` 등록은 top-level get만). **신규 리터럴 오류문자열 3 테스트는 전부 통과** (armB·재런은 실패).
+- **버그 소재의 아이러니 (같은-마음 테제 frontier 승격)**: stale-캐시 근원은 4.1(ornith)+4.2(GPT) 결합부인데, 4.2는 **GPT가 구현하고 GPT가 검증한 유일한 태스크 쌍** — 하이브리드 런에서 같은-마음 구현/검증 페어링이 발생한 정확히 그 지점에 출하 버그가 서식. verifier는 직접 전이 케이스(X1→Y1→A1)는 잡았으나 비대칭 변형은 통과. held-out oracle(제3의 마음)만 잡음. **같은-마음 사각지대는 모델 등급 무관 — frontier에서도 재현.**
+- **4.4 differential의 새 실패 모드 — "정직하되 무딘" 레퍼런스**: ornith의 NaiveSheet는 이번엔 진짜 독립 구현(380줄, 캐시 없음, 버그 복제 없음 — 재런의 글자 복제와 대조). 그러나 주소 풀 200셀 × 시퀀스 ~50 op = 의존 충돌 희박 → 1000 시드 0 mismatch. **풀을 12셀로 좁히면 자기 하네스가 21/100 시드에서 출하 버그를 잡음** — 파라미터 하나(밀도)가 잡느냐 놓치느냐를 갈랐고, GPT verifier도 밀도 문제는 못 봄. 같은-마음 시리즈의 3형태: 글자 복제(재런) → 테스트 맹점 공유(하이브리드 3.1, 교차-마음이 차단) → **적대적 밀도 감각 부재(하이브리드 4.4)**.
+- **교차 변이 (사전 등록 확인 완료)**: **M7 KILL** — 세 same-mind 스위트가 전부 SURVIVED시킨 혼합 mis-order 변이를 hybrid 스위트가 2 테스트로 죽임(3.1 halt에서 GPT verifier가 강제한 B1:A2 테스트의 직접 산물). **M8 KILL** — armB의 출하 버그 변이를 10 테스트로 죽임(SUM 경로만 변이). 자체 스위트 281개.
+- **사전 등록 대비 판정**: ① 완주+전 경계 메커니즘 이행 ✓ ② oracle ≥ armB(126) ✗ (119) — 단 실패가 단일 근원이고 그 근원이 same-mind 페어링 지점이라 "파편화 해악"으로 귀속 불가 ③ **교차-마음 verifier의 M7류 적발 ✓✓** (3.1 라이브 적발 + 변이 KILL 확인) ④ 처방 확립: **"구현은 로컬이어도 되고, verifier는 다른 혈통으로" — 단 예외 없이** (frontier 태스크도 verifier와 같은 마음이면 사각지대 부활). 부가 발견: 밀도 파라미터가 differential의 생사를 가름 → oracle/레퍼런스 설계 가이드에 "밀집 소구역" 명시할 것.
+
 ## HYBRID RERUN PRE-REGISTRATION (2026-07-13, 발사 대기 — anthropic 인증만 남음)
 
 - **셋업**: `~/code/gridcalc-hybrid` — spec+plan을 재런 시드(`gridcalc-rerun@9d48592`)에서 verbatim 복사, loopspace **0.15.2**(`64eeb45`), **tier A**(프로파일 정합 — 재런의 tier C는 ornith 오케스트레이터 한계 때문이었고 이번엔 불필요). 라우팅: 오케스트레이터+verifier = `openai/gpt-5.5`(ChatGPT OAuth — Anthropic은 opencode OAuth 미지원이라 교체; OAuth 백엔드가 gpt-5.6·codex-spark를 거부해 Codex CLI가 쓰는 gpt-5.5로 확정, 텍스트+툴 스모크 통과. 교차-마음 조건 동일 충족 — 구현자 ornith / verifier GPT / oracle 저자 Claude로 **세 마음 분리**가 오히려 깨끗해짐), implementer = ornith 35B (opencode agent 설정: `implementer`/`verifier` 서브에이전트 분리, 프로젝트 opencode.json). ornith 클라이언트 타임아웃 300s→**900s**(0.15.0 재런 사망 원인 직접 처방). 러너 `gridcalc/hybrid_supervise.sh` (supervise.sh 0.15.2 래핑: stall kill 3600s + fast-fail 3×60s 명시).

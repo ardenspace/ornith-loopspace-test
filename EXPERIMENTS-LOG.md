@@ -1,6 +1,14 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-13 · 정밀·모호·heavy·멀티세션(W) 네 축 + **0.15.0 검증 재런(UPDATE 8)** 완료. X/Y/Z 델타 0, W는 −6/131 solo 우세, **재런은 106/131로 더 나쁨** — 단 "같은-마음 사각지대" 테제의 최강 증거(레퍼런스에 버그 복제) + 이행-공백 발견 3건 획득. 상세 = `gridcalc/grading/EXPERIMENT.md` RERUN RESULTS.
+written: 2026-07-14 · 시리즈 6런 완료. 최신 = **하이브리드 재런(UPDATE 10): frontier 오케스트레이터·verifier × ornith 구현자, oracle v2 119/134 완주** — 교차-마음 verifier가 M7·stale-캐시 두 출하-버그 클래스를 루프 내 차단(M7·M8 변이 자체 스위트 KILL, 시리즈 최초), 유일 출하 버그는 GPT-구현·GPT-검증 페어링 지점(같은-마음 사각지대의 frontier 승격). 상세 = `gridcalc/grading/EXPERIMENT.md` HYBRID RESULTS.
+
+## ⏩ UPDATE 2026-07-14 (10) — 하이브리드 재런 완주: 처방("verifier만 다른 혈통") 실증, oracle 119/134, 같은-마음 테제 3형태 완성
+- **완주**: 13 태스크/4 phase, `run complete` 정상 종료(STUCK 아님), 전 phase 경계 프로브·변이 완전 이행, halt 8회 전부 규정 halt(운영자 8결정: 캡 30000 상향, 2.1·4.2 frontier 라우팅, coverage-only 예외, 좁은 재개들). 벽시계 ~12h.
+- **★ 사전 등록 관측 2/2 적중**: ① 3.1에서 GPT verifier가 M7 맹점(B1:A2 혼합 역순 — 세 same-mind 스위트 전부 SURVIVED)을 라이브 적발·테스트 강제 → **M7 변이 자체 스위트 KILL(시리즈 최초)** ② 4.2에서 stale-캐시 클래스(재런 출하 버그 2번) 구체 재현으로 차단. M8 변이도 KILL. 신규 리터럴 오류문자열 oracle 3건 전부 통과.
+- **oracle v2 119/134** (solo 133 > armB 126 > hybrid 119 > 재런 107). 실패 15 전부 R11, 단일 근원: 의존성-평가 경로 캐시가 closure 미등록 → 무효화 불가 → stale. **소재의 아이러니: 4.2 = GPT 구현 + GPT 검증(유일한 같은-마음 페어링 지점) — 같은-마음 사각지대는 frontier에서도 재현.** oracle(제3의 마음)만 적발.
+- **같은-마음 3형태 완성**: 글자 복제(재런 4.4) → 테스트 맹점 공유(하이브리드 3.1, 교차-마음이 차단) → **적대적 밀도 감각 부재**(하이브리드 4.4: 정직한 380줄 레퍼런스가 주소 풀 200셀 탓에 무딤 — 12셀로 좁히면 21/100 시드 적발; GPT verifier도 밀도는 못 봄).
+- **시리즈 처방 확립**: 구현은 로컬 모델로 충분(작은 브리프+엄격 검증 조합 시), **verifier는 구현자와 다른 혈통 필수 — 예외 없이**(frontier 태스크 포함). differential/oracle은 밀집 소구역 필수. 인프라 정정 2건(출력 캡 절단 = "reasoning-드롭"의 정체, 300s/900s 타임아웃)으로 "로컬 35B 순응 병목" 결산 대폭 완화.
+- 원자료: `gridcalc/hybrid-loopspace-0.15.2/`(트리+.loopspace 아카이브), `gridcalc-hybrid` 라이브 레포, `runner-logs/hybrid_supervise.log`, `hybrid_resume{3..8}.sh`, EXPERIMENT.md HYBRID RESULTS + 중간 사건 1~8.
 
 ## ⏩ UPDATE 2026-07-13 (9) — 포렌식 정정: phase 3 경계 소실 = 백엔드 타임아웃 사망(순응 아님) → 0.15.2 + v0.15.1 태그
 - **정정 (opencode.db 세션 저장소 추적)**: UPDATE 8의 "ornith가 phase 3 경계를 통째 스킵" 서사는 오진. 세션 2는 경계를 인지하고 Phase 3 verifier를 디스패치까지 함(10:12). verifier(`ses_0a6f41861ffe…`)가 ~5분 정상 진행(spec 프로브 도출 중) 후 write error + **"The operation timed out."**(300s)로 사망 — `probes_phase_3.py` 부재의 직접 원인. 오케스트레이터 다음 호출(10:22:21)도 정확히 300s 뒤 parts 0으로 동일 타임아웃 → 턴이 에러 종료, 저널·경계 커밋·handoff 무기록 → 재개 세션 4.1 직행. 근원 = 로컬 llama-server 지연(최대-컨텍스트 프롬프트 처리 or 단일 슬롯 큐잉, 미확정). **귀속 재배분: phase 3 = 인프라 몫 / phase 4 프로브·변이 생략, tier 자가 승격, 저널 표류 = 순응 몫.** 세션 3의 6.5h 행도 같은 타임아웃 계급 개연성. 상세: `gridcalc/grading/EXPERIMENT.md` RERUN RESULTS 포렌식 정정 항목.
