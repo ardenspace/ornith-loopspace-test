@@ -1,6 +1,14 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-14 · 시리즈 6런 완료. 최신 = **하이브리드 재런(UPDATE 10): frontier 오케스트레이터·verifier × ornith 구현자, oracle v2 119/134 완주** — 교차-마음 verifier가 M7·stale-캐시 두 출하-버그 클래스를 루프 내 차단(M7·M8 변이 자체 스위트 KILL, 시리즈 최초), 유일 출하 버그는 GPT-구현·GPT-검증 페어링 지점(같은-마음 사각지대의 frontier 승격). 상세 = `gridcalc/grading/EXPERIMENT.md` HYBRID RESULTS.
+written: 2026-07-14 · 시리즈 6런 완료. 최신 = **W′ 설계 등록(UPDATE 13): 3-arm dose-response (solo/thin/thick) at ~4x** — thin = loopspace 0.17 lead mode 신설이 선행 작업. 직전 = 하이브리드 재런(UPDATE 10): 교차-마음 verifier가 M7·stale-캐시 두 출하-버그 클래스를 루프 내 차단, 유일 출하 버그는 GPT-구현·GPT-검증 페어링 지점(같은-마음 사각지대의 frontier 승격). 상세 = `gridcalc/grading/EXPERIMENT.md` HYBRID RESULTS.
+
+## ⏩ UPDATE 2026-07-15 (13) — W′ 설계 종결·등록: 2-arm 재판이 아니라 3-arm 구조 dose-response + thin harness 질문 병합
+
+- **피벗의 근원**: 사용자 문제의식 "모델이 좋아진 지금 하네스가 얇아져도 되지 않나" — 철학 후보 *Give autonomy. Enforce invariants.* (Keep context light, verify heavy는 유지). 시리즈 증거 대조: 과정-지휘 비용은 실재(하이브리드 halt 중 경계-초과 교착·검증 마찰 = 지휘의 부산물), 단 risk-triggered verifier 안은 같은-마음 실증과 정면충돌이라 기각 — **사각지대는 위험해 보이지 않으므로 risk 분류 자체가 뚫림**. 절충 = 검증 깊이는 자율, 혈통 독립 검증은 체크포인트에서 무조건.
+- **설계 확정** (`gridcalc-xl/grading/EXPERIMENT.md`, 커밋 `27af232`; TG 대화로 갈림길 6개 승인): S=ornith 세션 루프(plan 미제공 — thin과 대칭) / T=**loopspace 0.17 lead mode**(lead=gpt-5.5에 spec+acceptance+budget, 분해·디스패치·per-task 검증 자율; 기계 invariant 5 — budget·liveness / 자율 체크포인트마다 `claude -p` 게이트(프로브+변이+커밋, 3연속 FAIL=halt) / 체크포인트 최소 밀도 / handoff freshness / 완주 게이트) / K=0.16 하이브리드(implementer_fallback: 포함). 과제 = **gridcalc-XL ~4x** (프리픽스 4 phase 재사용 + 신규 6: 문자열/절대참조·named range/undo·redo/★multi-sheet(심은 abstraction trap — phase 1 주소 모델 전면 개정)/영속화/recalc v2). oracle v3 = Claude 저자(강제 확정 — 세 arm이 ornith·GPT 소진), v2 134 프리픽스 재사용 + ~300 어서션, 밀집 소구역·변이·trajectory 동일.
+- **사전 등록 골자**: manipulation check = S가 4+ 세션 소비(미달 = 전제 미발동 분기, 무효 아님). 해석 3분기 — ⓐ S 좌초·drift + T·K 완주 = 구조 주장 성립, 그 안에서 **T≥K면 "thin으로 충분"**(0.17 방향 확정) ⓑ S 완주 + oracle 우위 = 4x에서도 solo 우위, 시리즈 종결 방향 ⓒ 미발동 = 규모 데이터 등록. Limitations 명기: thin 게이트 verifier와 oracle이 같은 마음(Claude, thin에 유리한 편향이라 더 위험 — 기계 성분 최대화로 완충), S만 로컬 모델(순수 구조 효과는 T vs K).
+- **부수: 아카이브 체계 확정** — 5개 런 저장소 git 히스토리를 bundle로 흡수(`33573eb`, 전부 verify), ~/code 원본 6폴더 삭제(~314M; gridcalc-trial/solo/rerun/hybrid, kvtx-rerun, gridcalc-runner — 세션 포렌식 DB는 원래 전역 `~/.local/share/opencode/opencode.db`, 폴더 내 61M는 node_modules 잔해였음). 이후 런도 종료 시 스냅샷+bundle 패턴.
+- **다음 = Order of work**: ① loopspace 0.17 lead mode 구현+테스트(loopspace 저장소) ② gridcalc-XL spec(loopspec 패널, acceptance 그룹 = thin 체크포인트 단위) ③ oracle v3+selftest = 사전 등록 커밋 ④ 런 3박(T→K→S) ⑤ 채점·아카이브·결산.
 
 ## ⏩ UPDATE 2026-07-15 (12) — loopspace 0.16.0: 열린 논점 ①·② 종결 (halt 8건 중 기계적 6건을 근원 제거)
 - **halt 8건 분류가 설계의 출발점**: 기계적 6(라우팅 에스컬레이션 2 — 두 번째는 사람도 "선례 적용"이라 명기 / 좁은 재개 3 — 전부 재개 후 1~2시도 통과, halt가 수렴 중인 수리를 끊은 것 / 경계-초과 교착 1) + 진짜 사람 몫 2(인프라 수리, 재계획 구조 선택). **처방 = 대행이 아니라 근원 제거** — 핸드오프의 "LLM 결정 대행자 훅" 안은 기각(거버넌스 층에 러버스탬프 재도입 = 시리즈가 방금 증명한 위험).
