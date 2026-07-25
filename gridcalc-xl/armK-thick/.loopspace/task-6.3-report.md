@@ -1,0 +1,10 @@
+- verdict: DONE
+- summary: Extended naive reference model with #REF! token support and fixed tokenizer to distinguish REF vs NAME tokens; updated directed equivalence tests to use reference model's define_name.
+- approach: Added REF_ERROR tokenization/parsing/evaluation to reference_model.py; fixed tokenizer logic to check consumed slice text[i+1:j].isdigit() instead of text[i+1:]; updated test_names.py directed equivalence tests to call ref.define_name() instead of simulating names.
+- tdd-evidence: tests/test_names.py failed-first: FAILED tests/test_names.py::TestDirectedEquivalence::test_undefined_name_equivalence (assert '#NAME!' == '#PARSE!')
+- pre-existing: define_name, _invalidate_names_dependents, _compute_closure, _resolve_name callback, undo/redo for define_name, _is_valid_name, _is_valid_target — all in gridcalc/workbook.py from prior phase tasks; formula.py NAME token handling from prior phase tasks. Red output came from reference model missing #REF! support and tokenizer treating A1 as NAME instead of REF.
+- files: tests/reference_model.py, tests/test_names.py
+- exports: tests.reference_model._ref_tokenize (now handles REF_ERROR), tests.reference_model._ref_parse_primary (handles REF_ERROR), tests.reference_model._ref_parse_range (handles REF_ERROR), tests.reference_model._ref_evaluate (handles ERROR nodes), tests.reference_model._ref_evaluate_func (handles REF_ERROR in ranges), tests.reference_model.NaiveSheet.define_name (pre-existing, now used by tests)
+- facts: none
+- contested: none
+- blocker: none

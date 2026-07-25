@@ -1,0 +1,7 @@
+- verdict: DONE
+- summary: Added round-trip semantic equivalence coverage and verified the existing 1000-seed multisheet differential harness interleaves round-trips.
+- approach: Reused Workbook.to_json/from_json, directed semantic snapshots over A1:Z99, copy rewrite checks, and the dense 3-sheet 12-address differential floor with roundtrip operations.
+- tdd-evidence: tests/test_roundtrip_equivalence.py failed-first: FAILED tests/test_roundtrip_equivalence.py::test_round_trip_preserves_sheet_names_clock_and_full_grid_values
+- pre-existing: Workbook.to_json/from_json existed from task 9.2; failed-first was captured by temporarily disabling restored cell loading in Workbook.from_json, then restoring it exactly.
+- files: tests/reference_model.py, tests/test_differential_multisheet.py, tests/test_roundtrip_equivalence.py, .loopspace/task-9.4-report.md
+- exports: none

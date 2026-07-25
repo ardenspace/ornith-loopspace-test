@@ -1,6 +1,20 @@
 # HANDOFF — ornith × loopspace 검증 실험
 
-written: 2026-07-14 · 시리즈 6런 완료. 최신 = **W′ 설계 등록(UPDATE 13): 3-arm dose-response (solo/thin/thick) at ~4x** — thin = loopspace 0.17 lead mode 신설이 선행 작업. 직전 = 하이브리드 재런(UPDATE 10): 교차-마음 verifier가 M7·stale-캐시 두 출하-버그 클래스를 루프 내 차단, 유일 출하 버그는 GPT-구현·GPT-검증 페어링 지점(같은-마음 사각지대의 frontier 승격). 상세 = `gridcalc/grading/EXPERIMENT.md` HYBRID RESULTS.
+written: 2026-07-14 · 시리즈 6런 완료. 최신 = **UPDATE 15: K(thick) 완주·결산 — W′ 3-arm 종료(oracle S 308 < T 932 < K 1324 /1330, 단 K는 18/29 태스크 escalation 교란)** · 직전 = **UPDATE 14: per-phase 구현자 결정 등록(W′ 게이트 동결)** · 직전 = **W′ 설계 등록(UPDATE 13): 3-arm dose-response (solo/thin/thick) at ~4x**. 상세 = `gridcalc/grading/EXPERIMENT.md` HYBRID RESULTS.
+
+## ⏩ UPDATE 2026-07-26 (15) — K(thick) 완주·아카이브·W′ 3-arm 결산: dose-response 단조 성립, 그러나 K 우위는 하이브리드가 아니라 escalation이 gpt-5.5로 62% 승격한 결과
+- **완주**: 29 태스크/10 phase, `run complete` 정상 종료, phase 1~10 경계 프로브·변이 전부 이행, re-plan 0. 벽시계 = task 1.1 커밋(7/18 20:02) → run complete(7/26 07:28) ≈ 7.5일(간헐 — STUCK 정지·usage-limit 대기 포함), 50 커밋. 트리+`gridcalc-xl-thick.git.bundle`(--all, verify 통과, HEAD=`0673c14`) → `armK-thick/` 흡수.
+- **oracle v3 채점: 1324 pass / 6 fail (1330케이스 = 450 + 딥 1000시드, `GRIDCALC_XL_DIFF_SEEDS=1000`)**. 실패 전부 **단일 클래스 = R3 파서 에러코드 경계**: 괄호 없는 bareword(`=SUM`·`=NOW`·`=Foo`·33자 초과)를 K는 `#NAME!`로 분류, oracle은 `#PARSE!`를 요구(직접 어서션 4 = r03 + r26의 `=NOW` 1, differential 시드 185 = 같은 뿌리 1). selftest green(420/420 not-counters), import 무결.
+- **★ 3-arm dose-response 단조 성립**: **S 308 < T 932 < K 1324** (/1330). 사전 등록 분기 ⓐ(S 좌초 + T·K 완주 = 구조 주장 성립) 충족 — 하네스 두께가 correctness와 단조 정렬. manipulation check도 충족(S 5세션 ≥ 4).
+- **★ 그러나 K 우위 해석에 결정적 교란 — escalation 18/29(62%)**: K의 명목 구성은 "0.16 하이브리드(ornith 구현 × gpt-5.5 오케스트레이터/verifier)"지만, ornith 구현자가 **29 태스크 중 18개에서 계약(`verdict: DONE|BLOCKED`)을 못 지켜 stall→burst→escalation 사다리로 gpt-5.5 fallback에 구제**됨(저널 `[N] escalated implementer → openai/gpt-5.5` ×18). 즉 K의 1324/1330은 "ornith가 thick 하네스에서 잘했다"가 **아니라** 사실상 **gpt-5.5가 다수 태스크를 구현한 결과** — dose-response의 "thick" 축이 "구현자 모델 능력" 축과 교란(confounded). ornith가 순수 통과시킨 태스크는 11개.
+- **게이트 판정 주의**: 사전 등록 게이트 "T≥K면 thin 충분 / K>T면 K′ 후속"에서 수치상 K>T지만, **위 교란 때문에 단순 K′ 트리거로 읽으면 오독**. K>T는 "thick 구조가 우월"이 아니라 "escalation이 K를 gpt-5.5 구현 arm으로 바꿨다"에 더 부합. 순수 구조 효과(같은 ornith 구현자, 하네스 두께만 차이)는 **S vs T**가 격리 — 여기서도 T≫S라 하네스 두께 자체의 correctness 기여는 독립적으로 성립. K′ 재설계 시 escalation 라우팅을 실험 변수에서 통제할 것(예: fallback 금지 or fallback도 로컬).
+- **운영 노트(secondary, 오염 노이즈 있음 — UPDATE 14)**: 사람 결정 halt 5회(6.3 task-stall, 8.3 phase-boundary 재오픈, 외 3); supervisor 자체정지 다수(ornith 행 STUCK·usage-limit STUCK) → `LOOPSPACE_MAX_NOPROGRESS` 2→4 상향으로 무인 야간 완주력 개선; 종반 **OpenAI usage-limit(함정 ⑤ 재관측)**로 정지 후, 로컬 백엔드를 gemma로 회수하며 `opencode.json` implementer를 ornith→gpt-5.5로 전환(커밋) — **10.2·10.3은 gpt-5.5 단독 구현**, ornith 참여는 10.1 escalation에서 완전 종료. 재시도·벽시계는 wrong-cwd 유출 노이즈로 신뢰 제한(correctness는 무결).
+- **중간 집계 종결**: T 932 · S 308 · K 1324 (/1330) — W′ 3-arm 전부 채점 완료.
+
+## ⏩ UPDATE 2026-07-22 (14) — per-phase 구현자 결정 등록: 착각 감사(오염 0) + K 종료까지 설계 동결, 운명은 T vs K가 결정
+- 블로그 1편 집필 중 사용자가 looprun 디스패치 단위를 phase별로 착각해온 걸 발견(실제·문서 모두 task별 fresh). 감사: 사전 등록·SPEC·oracle·블로그 1/2편 전부 오염 없음 → **재진행 없음**. K 진행 중(phase 6/10)이므로 **K 종료까지 looprun 디스패치 설계 변경 동결**. 게이트: T≥K면 per-phase conducted 우선순위 하락(lead 방향), K>T면 K′ 후속 실험(thick+per-phase, 같은 SPEC+oracle v3). 근거·K′ 설계 스케치·블로그 처분 전문 = **`DECISION-per-phase-implementer.md`**.
+- **quarantine-armT-contamination 포렌식 해소 (같은 날)**: K 구현자 세션들의 **wrong-cwd 유출** — 작업물을 runs/thick가 아니라 아카이브 armT-thin/에 씀 (스모킹 건: thick journal `[4.2] attempt 1` — 구현자 "구현했다" vs verifier "files absent"; 격리 파일 mtime이 thick 2.1·4.2 작업대와 일치, `__init__.py.bak` = thin 원본과 동일). **T 결과 무결**(완주·번들·궤적채점 전부 오염 이전), K는 correctness 무결·secondary 지표(재시도·벽시계)에 노이즈 — 결산 시 명기. "codex 토큰 소진" 가설 기각. 증거 체인 전문 = DECISION 파일.
+- 미결 1: 7/16 이후 런 기록(T 완주·S 5세션·K 진행·위 포렌식) 이 파일 미기재 부채 — K 결산 UPDATE에서 정리.
 
 ## ⏩ UPDATE 2026-07-15 (13) — W′ 설계 종결·등록: 2-arm 재판이 아니라 3-arm 구조 dose-response + thin harness 질문 병합
 
