@@ -1,0 +1,3 @@
+Implemented the full `gridcalc` engine (parser, evaluator, Sheet with lazy/cached incremental recomputation, cycle detection, and a 1000-seed differential suite) across all 4 plan phases in one pass. Full suite: 107 passed. Left a NOTES.md with design rationale for future sessions.
+
+<DONE>
