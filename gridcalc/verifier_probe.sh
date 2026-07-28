@@ -25,9 +25,16 @@ OUT=$OUT_DIR/${MODEL}_${SNAP}.md
 
 echo "probe: model=$MODEL snapshot=$SNAP -> $OUT"
 
+# Autonomy flags are the operator's call, as with sonnet_solo_loop.sh. All three
+# cells must run under the SAME grant or the comparison is confounded, so set
+# both to the equivalent level for their runner.
+CLAUDE_FLAGS=${CLAUDE_FLAGS:-}
+OPENCODE_FLAGS=${OPENCODE_FLAGS:-}
+
+# shellcheck disable=SC2086
 case "$MODEL" in
-  gpt-*)  opencode run -m "openai/$MODEL" "$PROMPT" > "$OUT" 2>&1 ;;
-  *)      claude -p --model "$MODEL" "$PROMPT" > "$OUT" 2>&1 ;;
+  gpt-*)  opencode run $OPENCODE_FLAGS -m "openai/$MODEL" "$PROMPT" > "$OUT" 2>&1 ;;
+  *)      claude -p --model "$MODEL" $CLAUDE_FLAGS "$PROMPT" > "$OUT" 2>&1 ;;
 esac
 
 echo "--- mixed mis-order mentions (judge manually; a bare 'B2:A1' does NOT count) ---"
